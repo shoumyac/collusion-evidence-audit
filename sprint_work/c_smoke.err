@@ -1,0 +1,32 @@
+Traceback (most recent call last):
+  File "C:\Users\shoum\Documents\Apart\work\sprint_work\c_llm_agents.py", line 144, in <module>
+    main()
+  File "C:\Users\shoum\Documents\Apart\work\sprint_work\c_llm_agents.py", line 127, in main
+    with hosted_model(model=args.model, gpu=args.gpu, api_key=key):
+  File "C:\Users\shoum\AppData\Roaming\uv\python\cpython-3.11.15-windows-x86_64-none\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\shoum\Documents\Apart\starter\util\poseidon_compute\hosted_model.py", line 130, in hosted_model
+    with modal.enable_output(), modal_serve.app.run():
+  File "C:\Users\shoum\AppData\Roaming\uv\python\cpython-3.11.15-windows-x86_64-none\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shoum\Documents\Apart\starter\steganographic-collusion\.venv\Lib\site-packages\modal\app.py", line 494, in run
+    async with _run_app(
+  File "C:\Users\shoum\AppData\Roaming\uv\python\cpython-3.11.15-windows-x86_64-none\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shoum\Documents\Apart\starter\steganographic-collusion\.venv\Lib\site-packages\modal\runner.py", line 455, in _run_app
+    await _create_all_objects(running_app, local_app_state, load_context)
+  File "C:\Users\shoum\Documents\Apart\starter\steganographic-collusion\.venv\Lib\site-packages\modal\runner.py", line 203, in _create_all_objects
+    await asyncio.gather(*[tc.create_task(_load(tag, obj)) for tag, obj in indexed_objects.items()])
+  File "C:\Users\shoum\Documents\Apart\starter\steganographic-collusion\.venv\Lib\site-packages\modal\runner.py", line 194, in _load
+    await resolver.load(obj, load_context, existing_object_id=existing_object_id)
+  File "C:\Users\shoum\Documents\Apart\starter\steganographic-collusion\.venv\Lib\site-packages\modal\_functions.py", line 981, in _load
+    with FunctionCreationStatus("Server" if is_server else "Function", tag) as function_creation_status:
+  File "C:\Users\shoum\Documents\Apart\starter\steganographic-collusion\.venv\Lib\site-packages\modal\_output\status.py", line 50, in __exit__
+    raise exc_val
+  File "C:\Users\shoum\Documents\Apart\starter\steganographic-collusion\.venv\Lib\site-packages\modal\_functions.py", line 1192, in _load
+    response: api_pb2.FunctionCreateResponse = await load_context.client._stub.FunctionCreate(request)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+modal.exception.InvalidError: Please add a payment method to use A10G GPU functions.
