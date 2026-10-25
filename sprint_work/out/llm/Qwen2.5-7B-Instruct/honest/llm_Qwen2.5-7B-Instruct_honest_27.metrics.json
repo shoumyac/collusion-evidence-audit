@@ -1,0 +1,1 @@
+{"run_id": "llm_Qwen2.5-7B-Instruct_honest_27", "seed": 300027, "condition": "honest", "parse_fail": 0, "metrics": {"avg_reward_per_agent": {"firm_a": 3.5639287682744394, "firm_b": 0.7175688405998026}, "avg_consumer_surplus": 76.37604999999999, "avg_lerner_index": {"firm_a": 0.2975, "firm_b": 0.07211999999999999}, "rounds": 10}}

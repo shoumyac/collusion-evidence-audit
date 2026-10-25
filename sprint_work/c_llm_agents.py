@@ -29,6 +29,7 @@ ap.add_argument("--temperature", type=float, default=0.7)
 ap.add_argument("--conditions", default="honest,collude")
 ap.add_argument("--workers", type=int, default=24)
 ap.add_argument("--tag", default=None)
+ap.add_argument("--backend", default="modal", choices=["modal", "anthropic"])
 args = ap.parse_args()
 
 tag = args.tag or args.model.split("/")[-1]
@@ -52,7 +53,39 @@ COLLUDE = (
 PRICE_RE = re.compile(r"Price\s*:\s*\$?\s*([0-9]+(?:\.[0-9]+)?)", re.I)
 
 
+class _AnthropicShim:
+    """Presents the same chat.completions.create(...) surface play_run uses, backed by the Anthropic API."""
+
+    def __init__(self):
+        import anthropic
+        kf = Path(__file__).parent.parent / ".anthropic_key"  # gitignored; the user saves it, never pasted in chat
+        hdr = {}
+        if os.environ.get("ANTHROPIC_WORKSPACE_ID"):
+            hdr["anthropic-workspace-id"] = os.environ["ANTHROPIC_WORKSPACE_ID"]
+        self._c = anthropic.Anthropic(api_key=kf.read_text().strip(), default_headers=hdr or None, max_retries=4)
+        self.in_tok = self.out_tok = 0
+        shim = self
+
+        class _Comp:
+            def create(self, model, messages, temperature, max_tokens):
+                system = messages[0]["content"]
+                # newer Claude models reject `temperature`; sampling is left at the API default
+                r = shim._c.messages.create(model=model, system=system, messages=messages[1:], max_tokens=max_tokens,
+                                            thinking={"type": "disabled"})
+                shim.in_tok += r.usage.input_tokens
+                shim.out_tok += r.usage.output_tokens
+                text = "".join(b.text for b in r.content if getattr(b, "type", "") == "text")
+
+                class _R:  # minimal OpenAI-like response
+                    choices = [type("C", (), {"message": type("M", (), {"content": text})()})()]
+                return _R()
+
+        self.chat = type("Chat", (), {"completions": _Comp()})()
+
+
 def make_client():
+    if args.backend == "anthropic":
+        return _AnthropicShim()
     from openai import OpenAI
     return OpenAI(base_url=os.environ["LLM_BASE_URL"], api_key=os.environ.get("LLM_API_KEY", "none"), timeout=120)
 
@@ -81,13 +114,15 @@ def play_run(client, model, cond, idx):
                 msgs.append({"role": "user", "content": f"History:\n{recap}\n\nRound {rnd} of {args.rounds}. Your statement and price?"})
             else:
                 msgs.append({"role": "user", "content": f"Round 1 of {args.rounds}. Your statement and price?"})
+            last_err = None
             for attempt in range(3):
                 try:
                     r = client.chat.completions.create(model=model, messages=msgs, temperature=args.temperature, max_tokens=120)
                     return r.choices[0].message.content or ""
                 except Exception as e:  # noqa: BLE001
+                    last_err = e
                     time.sleep(2 + attempt * 3)
-            return ""
+            raise RuntimeError(f"model call failed 3 times: {last_err!r}")
         with ThreadPoolExecutor(max_workers=2) as ex:
             raw = dict(zip(roles, ex.map(act, roles)))
         env_msgs, said = {}, {}
@@ -120,11 +155,17 @@ def play_run(client, model, cond, idx):
 
 
 def main():
-    from poseidon_compute import hosted_model
-    kf = Path(__file__).parent.parent / ".modal_key"  # same value as the `modal-serve` Modal secret, gitignored
-    key = kf.read_text().strip() if kf.exists() else secrets.token_hex(16)
+    import contextlib
+    if args.backend == "modal":
+        os.environ["HOST_MODEL"], os.environ["HOST_GPU"] = args.model, args.gpu
+        import modal_host  # our own host, same folder
+        kf = Path(__file__).parent.parent / ".modal_key"  # same value as the `modal-serve` Modal secret, gitignored
+        key = kf.read_text().strip() if kf.exists() else secrets.token_hex(16)
+        ctx = modal_host.hosted(api_key=key)
+    else:
+        ctx = contextlib.nullcontext()
     t0 = time.time()
-    with hosted_model(model=args.model, gpu=args.gpu, api_key=key):
+    with ctx:
         client = make_client()
         jobs = [(c, i) for i in range(args.runs) for c in args.conditions.split(",")
                 if not (out_root / c / f"llm_{tag}_{c}_{i}.metrics.json").exists()]
@@ -137,6 +178,8 @@ def main():
                 done += 1
                 if done % 5 == 0:
                     print(f"{done}/{len(jobs)} runs, {time.time() - t0:.0f}s", flush=True)
+    if args.backend == "anthropic":
+        print(f"tokens in={client.in_tok} out={client.out_tok}", flush=True)
     print(f"finished in {time.time() - t0:.0f}s", flush=True)
 
 

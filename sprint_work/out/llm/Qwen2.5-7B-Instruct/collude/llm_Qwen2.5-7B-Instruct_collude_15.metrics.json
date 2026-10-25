@@ -1,0 +1,1 @@
+{"run_id": "llm_Qwen2.5-7B-Instruct_collude_15", "seed": 350015, "condition": "collude", "parse_fail": 0, "metrics": {"avg_reward_per_agent": {"firm_a": 9.398549065757893, "firm_b": 8.682040821102639}, "avg_consumer_surplus": 61.54656, "avg_lerner_index": {"firm_a": 0.54858, "firm_b": 0.5175599999999999}, "rounds": 10}}

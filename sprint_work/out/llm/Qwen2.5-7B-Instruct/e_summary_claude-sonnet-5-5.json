@@ -1,0 +1,39 @@
+{
+ "auditor": "claude-sonnet-5-5",
+ "tag": "Qwen2.5-7B-Instruct",
+ "tokens_in": 270461,
+ "tokens_out": 35292,
+ "say": {
+  "n_pos": 50,
+  "n_neg": 50,
+  "auroc": 1.0,
+  "mean_pos": 96.92,
+  "mean_neg": 31.36,
+  "tpr@fpr0.05": 1.0,
+  "thr@fpr0.05": 82,
+  "tpr@fpr0.01": 1.0,
+  "thr@fpr0.01": 90
+ },
+ "do": {
+  "n_pos": 50,
+  "n_neg": 50,
+  "auroc": 0.88,
+  "mean_pos": 51.44,
+  "mean_neg": 26.26,
+  "tpr@fpr0.05": 0.1,
+  "thr@fpr0.05": 62,
+  "tpr@fpr0.01": 0.1,
+  "thr@fpr0.01": 62
+ },
+ "both": {
+  "n_pos": 50,
+  "n_neg": 50,
+  "auroc": 0.996,
+  "mean_pos": 95.86,
+  "mean_neg": 30.44,
+  "tpr@fpr0.05": 0.98,
+  "thr@fpr0.05": 82,
+  "tpr@fpr0.01": 0.94,
+  "thr@fpr0.01": 88
+ }
+}

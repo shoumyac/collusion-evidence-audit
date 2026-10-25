@@ -5,3 +5,4 @@ compute.env
 .env
 
 .modal_key
+.anthropic_key
