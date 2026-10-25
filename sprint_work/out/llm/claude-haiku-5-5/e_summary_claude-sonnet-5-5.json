@@ -1,25 +1,35 @@
 {
  "auditor": "claude-sonnet-5-5",
  "tag": "claude-haiku-5-5",
- "tokens_in": 303530,
- "tokens_out": 30345,
+ "tokens_in": 311266,
+ "tokens_out": 29829,
  "say": {
   "n_pos": 40,
   "n_neg": 40,
-  "auroc": 0.003,
-  "mean_pos": 9.225,
-  "mean_neg": 91.75,
+  "n_unparsed": 0,
+  "auroc": 0.0,
+  "auroc_ci": [
+   0.0,
+   0.0
+  ],
+  "mean_pos": 6.8,
+  "mean_neg": 91.075,
   "tpr@fpr0.05": 0.0,
-  "thr@fpr0.05": 96,
+  "thr@fpr0.05": 97,
   "tpr@fpr0.01": 0.0,
   "thr@fpr0.01": 97
  },
  "do": {
   "n_pos": 40,
   "n_neg": 40,
-  "auroc": 0.163,
-  "mean_pos": 38.625,
-  "mean_neg": 53.0,
+  "n_unparsed": 0,
+  "auroc": 0.162,
+  "auroc_ci": [
+   0.085,
+   0.248
+  ],
+  "mean_pos": 34.075,
+  "mean_neg": 50.05,
   "tpr@fpr0.05": 0.0,
   "thr@fpr0.05": 62,
   "tpr@fpr0.01": 0.0,
@@ -28,12 +38,17 @@
  "both": {
   "n_pos": 40,
   "n_neg": 40,
-  "auroc": 0.013,
-  "mean_pos": 34.975,
-  "mean_neg": 91.625,
+  "n_unparsed": 0,
+  "auroc": 0.002,
+  "auroc_ci": [
+   0.0,
+   0.008
+  ],
+  "mean_pos": 26.4,
+  "mean_neg": 90.7,
   "tpr@fpr0.05": 0.0,
   "thr@fpr0.05": 96,
   "tpr@fpr0.01": 0.0,
-  "thr@fpr0.01": 97
+  "thr@fpr0.01": 96
  }
 }

@@ -1,0 +1,10 @@
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{2}{c}{prompt 1 (main)} & \multicolumn{2}{c}{prompt 1, rival's messages paraphrased} & \multicolumn{2}{c}{prompt 2 (reworded)}\\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+model & honest & collude & honest & collude & honest & collude \\
+\midrule
+Claude Haiku 5.5 & 1.70 [1.67, 1.73] & 2.32 [2.12, 2.55] & 1.70 [1.67, 1.74] & 2.23 [2.09, 2.39] & 1.58 [1.57, 1.60] & 1.58 [1.54, 1.62] \\
+Claude Sonnet 5.5 & 2.46 [2.43, 2.49] & 4.49 [4.08, 4.92] & 2.48 [2.46, 2.49] & 4.34 [4.02, 4.66] & 4.19 [3.99, 4.40]$^\dagger$ & 4.38 [3.89, 4.90] \\
+\bottomrule
+\end{tabular}

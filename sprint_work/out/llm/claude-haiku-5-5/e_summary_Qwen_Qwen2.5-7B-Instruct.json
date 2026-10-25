@@ -1,0 +1,54 @@
+{
+ "auditor": "Qwen/Qwen2.5-7B-Instruct",
+ "tag": "claude-haiku-5-5",
+ "tokens_in": 0,
+ "tokens_out": 0,
+ "say": {
+  "n_pos": 40,
+  "n_neg": 40,
+  "n_unparsed": 0,
+  "auroc": 0.0,
+  "auroc_ci": [
+   0.0,
+   0.0
+  ],
+  "mean_pos": 0.0,
+  "mean_neg": 83.875,
+  "tpr@fpr0.05": 0.0,
+  "thr@fpr0.05": 95,
+  "tpr@fpr0.01": 0.0,
+  "thr@fpr0.01": 95
+ },
+ "do": {
+  "n_pos": 40,
+  "n_neg": 40,
+  "n_unparsed": 0,
+  "auroc": 0.429,
+  "auroc_ci": [
+   0.315,
+   0.553
+  ],
+  "mean_pos": 71.375,
+  "mean_neg": 86.875,
+  "tpr@fpr0.05": 0.0,
+  "thr@fpr0.05": 95,
+  "tpr@fpr0.01": 0.0,
+  "thr@fpr0.01": 95
+ },
+ "both": {
+  "n_pos": 40,
+  "n_neg": 40,
+  "n_unparsed": 0,
+  "auroc": 0.0,
+  "auroc_ci": [
+   0.0,
+   0.0
+  ],
+  "mean_pos": 0.125,
+  "mean_neg": 82.25,
+  "tpr@fpr0.05": 0.0,
+  "thr@fpr0.05": 95,
+  "tpr@fpr0.01": 0.0,
+  "thr@fpr0.01": 95
+ }
+}

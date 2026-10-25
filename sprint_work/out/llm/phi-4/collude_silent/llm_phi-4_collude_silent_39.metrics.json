@@ -1,0 +1,1 @@
+{"run_id": "llm_phi-4_collude_silent_39", "seed": 450039, "condition": "collude_silent", "parse_fail": 0, "fail_samples": [], "para_examples": [], "metrics": {"avg_reward_per_agent": {"firm_a": 7.983625753439905, "firm_b": 8.027799146756626}, "avg_consumer_surplus": 64.04569000000001, "avg_lerner_index": {"firm_a": 0.5, "firm_b": 0.5}, "rounds": 10}}

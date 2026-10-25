@@ -1,0 +1,1 @@
+{"run_id": "llm_Mistral-Nemo-12B_honest_silent_6", "seed": 400006, "condition": "honest_silent", "parse_fail": 0, "fail_samples": [], "para_examples": [], "metrics": {"avg_reward_per_agent": {"firm_a": 5.670320335807495, "firm_b": 8.63389239252474}, "avg_consumer_surplus": 65.3844, "avg_lerner_index": {"firm_a": 0.39180000000000004, "firm_b": 0.5243800000000001}, "rounds": 10}}

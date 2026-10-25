@@ -1,0 +1,1 @@
+{"run_id": "llm_Qwen2.5-32B-Instruct_honest_silent_37", "seed": 400037, "condition": "honest_silent", "parse_fail": 0, "fail_samples": [], "para_examples": [], "metrics": {"avg_reward_per_agent": {"firm_a": 8.878855115037068, "firm_b": 8.511906349927184}, "avg_consumer_surplus": 62.12719, "avg_lerner_index": {"firm_a": 0.53087, "firm_b": 0.51773}, "rounds": 10}}

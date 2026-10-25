@@ -1,0 +1,30 @@
+{
+ "pricing|honest": {
+  "n": 10,
+  "shipped_frac_le_0.05": 0.9,
+  "matched_null_frac_le_0.05": 0.0,
+  "shipped_median_p": 0.006799497521970288,
+  "matched_null_median_p": 0.5116789529470983
+ },
+ "pricing|keyword": {
+  "n": 10,
+  "shipped_frac_le_0.05": 1.0,
+  "matched_null_frac_le_0.05": 0.0,
+  "shipped_median_p": 0.0015128404538947704,
+  "matched_null_median_p": 0.4630008251808022
+ },
+ "auction|honest": {
+  "n": 10,
+  "shipped_frac_le_0.05": 1.0,
+  "matched_null_frac_le_0.05": 0.0,
+  "shipped_median_p": 7.974395734633433e-06,
+  "matched_null_median_p": 0.37686905259988546
+ },
+ "auction|keyword": {
+  "n": 10,
+  "shipped_frac_le_0.05": 1.0,
+  "matched_null_frac_le_0.05": 0.0,
+  "shipped_median_p": 0.001843797958993143,
+  "matched_null_median_p": 0.5747879896953413
+ }
+}

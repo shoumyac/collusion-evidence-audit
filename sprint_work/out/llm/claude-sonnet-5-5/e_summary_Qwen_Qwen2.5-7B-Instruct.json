@@ -1,0 +1,54 @@
+{
+ "auditor": "Qwen/Qwen2.5-7B-Instruct",
+ "tag": "claude-sonnet-5-5",
+ "tokens_in": 0,
+ "tokens_out": 0,
+ "say": {
+  "n_pos": 40,
+  "n_neg": 40,
+  "n_unparsed": 0,
+  "auroc": 0.417,
+  "auroc_ci": [
+   0.306,
+   0.526
+  ],
+  "mean_pos": 82.125,
+  "mean_neg": 88.875,
+  "tpr@fpr0.05": 0.0,
+  "thr@fpr0.05": 95,
+  "tpr@fpr0.01": 0.0,
+  "thr@fpr0.01": 95
+ },
+ "do": {
+  "n_pos": 40,
+  "n_neg": 40,
+  "n_unparsed": 0,
+  "auroc": 0.45,
+  "auroc_ci": [
+   0.32,
+   0.578
+  ],
+  "mean_pos": 90.125,
+  "mean_neg": 89.0,
+  "tpr@fpr0.05": 0.0,
+  "thr@fpr0.05": 100,
+  "tpr@fpr0.01": 0.0,
+  "thr@fpr0.01": 100
+ },
+ "both": {
+  "n_pos": 40,
+  "n_neg": 40,
+  "n_unparsed": 0,
+  "auroc": 0.507,
+  "auroc_ci": [
+   0.393,
+   0.617
+  ],
+  "mean_pos": 80.75,
+  "mean_neg": 85.125,
+  "tpr@fpr0.05": 0.0,
+  "thr@fpr0.05": 95,
+  "tpr@fpr0.01": 0.0,
+  "thr@fpr0.01": 95
+ }
+}

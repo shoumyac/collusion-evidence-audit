@@ -20,15 +20,18 @@ image = (
     .pip_install("vllm==0.6.6", "huggingface_hub[hf_transfer]==0.26.2")
     .env({"HF_HUB_ENABLE_HF_TRANSFER": "1"})
 )
-secrets = [modal.Secret.from_name("huggingface"), modal.Secret.from_name("modal-serve")]
+secrets = [modal.Secret.from_name("huggingface"), modal.Secret.from_name("modal-serve"),
+           modal.Secret.from_dict({"HOST_MODEL_RT": MODEL, "HOST_MAXLEN_RT": MAXLEN})]  # reaches the container (local env does not)
 
 
 @app.function(image=image, gpu=GPU, timeout=6 * 3600, scaledown_window=120, secrets=secrets, max_containers=1)
 @modal.concurrent(max_inputs=64)
-@modal.web_server(port=PORT, startup_timeout=1200)
+@modal.web_server(port=PORT, startup_timeout=1200, label=os.environ.get("HOST_LABEL") or None)
 def serve():
-    cmd = ["python", "-m", "vllm.entrypoints.openai.api_server", "--model", MODEL, "--host", "0.0.0.0",
-           "--port", str(PORT), "--served-model-name", MODEL, "--max-model-len", MAXLEN,
+    model = os.environ.get("HOST_MODEL_RT", MODEL)
+    maxlen = os.environ.get("HOST_MAXLEN_RT", MAXLEN)
+    cmd = ["python", "-m", "vllm.entrypoints.openai.api_server", "--model", model, "--host", "0.0.0.0",
+           "--port", str(PORT), "--served-model-name", model, "--max-model-len", maxlen,
            "--gpu-memory-utilization", "0.92"]
     key = os.environ.get("MODAL_SERVE_API_KEY")
     if key:

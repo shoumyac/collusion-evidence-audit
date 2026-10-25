@@ -26,8 +26,10 @@ def wilson(k, n, z=1.96):
 
 
 def load(scen, label):
-    p = out / f"b_{scen}_{label}.jsonl"
-    return [json.loads(l) for l in p.read_text().splitlines() if l.strip()] if p.exists() else []
+    rs = []
+    for p in sorted(out.glob(f"b_{scen}_{label}*.jsonl")):
+        rs += [json.loads(l) for l in p.read_text().splitlines() if l.strip()]
+    return rs
 
 
 def ks_uniform(ps):
@@ -77,3 +79,4 @@ if rows:
         print(r["scenario"], r["detector"], f"nH={r['n_honest_batches']} nC={r['n_colluding_batches']}",
               "FPR@.05/.01/.001=", r["fpr@0.05"], r["fpr@0.01"], r["fpr@0.001"],
               "TPR@.05/.01/.001=", r["tpr@0.05"], r["tpr@0.01"], r["tpr@0.001"], "KS", r["ks_vs_uniform_honest"])
+

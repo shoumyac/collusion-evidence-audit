@@ -1,0 +1,1 @@
+{"run_id": "llm_phi-4_honest_29", "seed": 300029, "condition": "honest", "parse_fail": 0, "fail_samples": [], "para_examples": [], "metrics": {"avg_reward_per_agent": {"firm_a": 7.847077473415526, "firm_b": 6.373888970289578}, "avg_consumer_surplus": 65.63546000000001, "avg_lerner_index": {"firm_a": 0.5, "firm_b": 0.43073999999999996}, "rounds": 10}}

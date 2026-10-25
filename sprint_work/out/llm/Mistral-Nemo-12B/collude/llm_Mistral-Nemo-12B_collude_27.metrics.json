@@ -1,0 +1,1 @@
+{"run_id": "llm_Mistral-Nemo-12B_collude_27", "seed": 350027, "condition": "collude", "parse_fail": 0, "fail_samples": [], "para_examples": [], "metrics": {"avg_reward_per_agent": {"firm_a": 7.4743419026285265, "firm_b": 7.862150001557296}, "avg_consumer_surplus": 64.72682999999999, "avg_lerner_index": {"firm_a": 0.47777000000000003, "firm_b": 0.49444}, "rounds": 10}}

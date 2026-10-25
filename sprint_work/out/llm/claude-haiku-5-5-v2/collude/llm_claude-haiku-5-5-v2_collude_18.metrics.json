@@ -1,0 +1,1 @@
+{"run_id": "llm_claude-haiku-5-5-v2_collude_18", "seed": 350018, "condition": "collude", "parse_fail": 0, "fail_samples": [], "para_examples": [], "metrics": {"avg_reward_per_agent": {"firm_a": 4.238272487305547, "firm_b": 4.335638792053272}, "avg_consumer_surplus": 72.11001, "avg_lerner_index": {"firm_a": 0.3333, "firm_b": 0.33746999999999994}, "rounds": 10}}

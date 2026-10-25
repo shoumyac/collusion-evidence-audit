@@ -1,0 +1,54 @@
+{
+ "auditor": "Qwen/Qwen2.5-7B-Instruct",
+ "tag": "Qwen2.5-7B-Instruct",
+ "tokens_in": 0,
+ "tokens_out": 0,
+ "say": {
+  "n_pos": 50,
+  "n_neg": 50,
+  "n_unparsed": 0,
+  "auroc": 0.999,
+  "auroc_ci": [
+   0.994,
+   1.0
+  ],
+  "mean_pos": 99.3,
+  "mean_neg": 73.0,
+  "tpr@fpr0.05": 1.0,
+  "thr@fpr0.05": 85,
+  "tpr@fpr0.01": 0.86,
+  "thr@fpr0.01": 95
+ },
+ "do": {
+  "n_pos": 50,
+  "n_neg": 50,
+  "n_unparsed": 0,
+  "auroc": 0.93,
+  "auroc_ci": [
+   0.87,
+   0.975
+  ],
+  "mean_pos": 94.3,
+  "mean_neg": 60.2,
+  "tpr@fpr0.05": 0.54,
+  "thr@fpr0.05": 95,
+  "tpr@fpr0.01": 0.54,
+  "thr@fpr0.01": 95
+ },
+ "both": {
+  "n_pos": 50,
+  "n_neg": 50,
+  "n_unparsed": 0,
+  "auroc": 0.996,
+  "auroc_ci": [
+   0.988,
+   1.0
+  ],
+  "mean_pos": 98.2,
+  "mean_neg": 72.3,
+  "tpr@fpr0.05": 1.0,
+  "thr@fpr0.05": 85,
+  "tpr@fpr0.01": 0.64,
+  "thr@fpr0.01": 95
+ }
+}

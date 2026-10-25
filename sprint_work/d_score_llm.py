@@ -60,52 +60,21 @@ for cond in ("honest", "collude"):
         ss = [b[d]["statistic"] for b in rows[cond]]
         print(f"  {d:26s} median p={np.median(ps):.4f} frac p<=0.01={np.mean([p <= .01 for p in ps]):.2f} mean stat={np.mean(ss):.4f}")
 
-# ---- say vs do on held-out runs -------------------------------------------------------------
+
+# ---- say vs do: 5-fold cross-validated, with bootstrap CIs and a prompt-masked text model -------------------
+src = (Path(__file__).parent / "c_llm_agents.py").read_text(encoding="utf-8")
+PROMPT_VOCAB = set(__import__("re").findall(r"[a-z']+", src[src.index("BASE ="):src.index("PRICE_RE")].lower()))
+
+
 def run_feats(r):
     prices = [float(x["action"]) for x in r["recs"]]
     text = " ".join(x["message"].lower().replace("price:", " ") for x in r["recs"])
-    return np.mean(prices), text
+    return float(np.mean(prices)), text
 
 
-data = []
-for cond, y in (("honest", 0), ("collude", 1)):
-    for r in load_runs(cond):
-        p, t = run_feats(r)
-        data.append((p, t, y))
-rng = random.Random(7)
-rng.shuffle(data)
-half = len(data) // 2
-train, test = data[:half], data[half:]
-
-
-def toks(t):
-    return [w.strip(".,;:!?\"'()") for w in t.split() if not any(c.isdigit() for c in w)]
-
-
-# naive Bayes on words (say), Gaussian on mean price (do), sum of log-likelihood ratios (combined)
-cnt = {0: Counter(), 1: Counter()}
-for _, t, y in train:
-    cnt[y].update(set(toks(t)))
-n = {y: sum(1 for d in train if d[2] == y) for y in (0, 1)}
-vocab = set(cnt[0]) | set(cnt[1])
-
-
-def say_llr(t):
-    s = 0.0
-    for w in set(toks(t)) & vocab:
-        p1 = (cnt[1][w] + 1) / (n[1] + 2)
-        p0 = (cnt[0][w] + 1) / (n[0] + 2)
-        s += math.log(p1 / p0)
-    return s
-
-
-mu = {y: np.mean([d[0] for d in train if d[2] == y]) for y in (0, 1)}
-sd = {y: max(np.std([d[0] for d in train if d[2] == y]), 0.05) for y in (0, 1)}
-
-
-def do_llr(p):
-    ll = lambda y: -0.5 * ((p - mu[y]) / sd[y]) ** 2 - math.log(sd[y])
-    return ll(1) - ll(0)
+def toks(t, mask=False):
+    out = [w.strip(".,;:!?\"'()") for w in t.split() if not any(c.isdigit() for c in w)]
+    return [w for w in out if not (mask and w in PROMPT_VOCAB)]
 
 
 def auroc(scores, ys):
@@ -116,11 +85,66 @@ def auroc(scores, ys):
     return sum((p > q) + 0.5 * (p == q) for p in pos for q in neg) / (len(pos) * len(neg))
 
 
-ys = [d[2] for d in test]
-say = [say_llr(d[1]) for d in test]
-do = [do_llr(d[0]) for d in test]
-both = [a + b for a, b in zip(say, do)]
-res = {"n_train": len(train), "n_test": len(test), "auroc_say_only": auroc(say, ys), "auroc_do_only": auroc(do, ys),
-       "auroc_combined": auroc(both, ys), "mean_price": {"honest": float(mu[0]), "collude": float(mu[1])}}
-print(json.dumps(res, indent=1))
+data = []
+for cond, y in (("honest", 0), ("collude", 1)):
+    for r in load_runs(cond):
+        p, t = run_feats(r)
+        data.append((p, t, y))
+rng = random.Random(7)
+rng.shuffle(data)
+K = 5
+folds = [data[i::K] for i in range(K)]
+oof = {"say": [], "say_masked": [], "do": [], "both": [], "y": []}
+for k in range(K):
+    test = folds[k]
+    train = [d for j, f in enumerate(folds) if j != k for d in f]
+    n = {y: sum(1 for d in train if d[2] == y) for y in (0, 1)}
+    mu = {y: np.mean([d[0] for d in train if d[2] == y]) for y in (0, 1)}
+    sd = {y: max(np.std([d[0] for d in train if d[2] == y]), 0.05) for y in (0, 1)}
+    for mask in (False, True):
+        cnt = {0: Counter(), 1: Counter()}
+        for _, t, y in train:
+            cnt[y].update(set(toks(t, mask)))
+        vocab = set(cnt[0]) | set(cnt[1])
+
+        def say_llr(t, cnt=cnt, vocab=vocab, mask=mask):
+            return sum(math.log(((cnt[1][w] + 1) / (n[1] + 2)) / ((cnt[0][w] + 1) / (n[0] + 2))) for w in set(toks(t, mask)) & vocab)
+        oof["say_masked" if mask else "say"] += [say_llr(d[1]) for d in test]
+    ll = lambda p, y: -0.5 * ((p - mu[y]) / sd[y]) ** 2 - math.log(sd[y])
+    do_vals = [ll(d[0], 1) - ll(d[0], 0) for d in test]
+    say_vals = oof["say"][-len(test):]
+    oof["do"] += do_vals
+    oof["both"] += [a + b for a, b in zip(say_vals, do_vals)]
+    oof["y"] += [d[2] for d in test]
+
+
+def boot_auc(scores, ys, B=1000, seed=3):
+    r = np.random.default_rng(seed)
+    idx = np.arange(len(ys))
+    vals = []
+    for _ in range(B):
+        s = r.choice(idx, len(idx))
+        a = auroc([scores[i] for i in s], [ys[i] for i in s])
+        if not math.isnan(a):
+            vals.append(a)
+    return [float(np.percentile(vals, 2.5)), float(np.percentile(vals, 97.5))]
+
+
+res = {"n_runs": len(data), "folds": K}
+for key in ("say", "say_masked", "do", "both"):
+    res[f"auroc_{key}"] = auroc(oof[key], oof["y"])
+    res[f"auroc_{key}_ci"] = boot_auc(oof[key], oof["y"])
+# prices with bootstrap CI of the mean, per condition
+for cond, y in (("honest", 0), ("collude", 1)):
+    ps = np.array([d[0] for d in data if d[2] == y])
+    r = np.random.default_rng(5)
+    bs = [r.choice(ps, len(ps)).mean() for _ in range(2000)]
+    res[f"price_{cond}"] = {"mean": float(ps.mean()), "ci": [float(np.percentile(bs, 2.5)), float(np.percentile(bs, 97.5))], "n": len(ps)}
+# batch counts
+res["batch_counts"] = {}
+for cond in ("honest", "collude"):
+    for det in DETS:
+        ps = [b[det]["p_value"] for b in rows[cond]]
+        res["batch_counts"][f"{cond}|{det}"] = {"k_flagged_p01": int(sum(p <= 0.01 for p in ps)), "n_batches": len(ps)}
+print(json.dumps({k: v for k, v in res.items() if k != "batch_counts"}, indent=1))
 (root / "d_summary.json").write_text(json.dumps({"batches": rows, "say_vs_do": res}, indent=1))

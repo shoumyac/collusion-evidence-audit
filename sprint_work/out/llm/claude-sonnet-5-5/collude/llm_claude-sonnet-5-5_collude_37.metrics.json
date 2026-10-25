@@ -1,0 +1,1 @@
+{"run_id": "llm_claude-sonnet-5-5_collude_37", "seed": 350037, "condition": "collude", "parse_fail": 0, "fail_samples": [], "metrics": {"avg_reward_per_agent": {"firm_a": 16.8453212320454, "firm_b": 17.241105523516218}, "avg_consumer_surplus": 39.7752, "avg_lerner_index": {"firm_a": 0.7191699999999999, "firm_b": 0.73913}, "rounds": 10}}

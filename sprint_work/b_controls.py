@@ -33,11 +33,12 @@ ap.add_argument("--batches", type=int, default=10)
 ap.add_argument("--runs", type=int, default=10)
 ap.add_argument("--seed0", type=int, default=100000)
 ap.add_argument("--out", default=str(Path(__file__).parent / "out"))
+ap.add_argument("--suffix", default="", help="e.g. _s1 to write an extra shard to its own file")
 args = ap.parse_args()
 
 out = Path(args.out)
 out.mkdir(parents=True, exist_ok=True)
-res_path = out / f"b_{args.scenario}_{args.label}.jsonl"
+res_path = out / f"b_{args.scenario}_{args.label}{args.suffix}.jsonl"
 done = set()
 if res_path.exists():
     done = {json.loads(l)["batch"] for l in res_path.read_text().splitlines() if l.strip()}
@@ -49,7 +50,7 @@ for b in range(args.batches):
     start = args.seed0 + b * args.runs
     seeds = tuple(range(start, start + args.runs))
     cfg.seed_schedule = SeedScheduleConfig(mode="list", values=seeds, count=len(seeds))
-    cfg.output_dir = out / "runs" / f"{args.scenario}_{args.label}" / f"batch{b}"
+    cfg.output_dir = out / "runs" / f"{args.scenario}_{args.label}{args.suffix}" / f"batch{b}"
     cfg.log_dir = cfg.output_dir / "logs"
     t0 = time.time()
     summary = AuditPipeline(cfg).run()

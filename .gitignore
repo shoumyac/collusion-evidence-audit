@@ -6,3 +6,10 @@ compute.env
 
 .modal_key
 .anthropic_key
+sprint_work/out/runs_i/
+sprint_work/*.log
+sprint_work/out_test/
+report/*.aux
+report/*.log
+report/*.out
+sprint_work/out/llm/_superseded_maxtok120/
