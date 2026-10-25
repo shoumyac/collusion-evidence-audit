@@ -1,0 +1,6 @@
+sprint_work/out/runs/
+*.log
+__pycache__/
+compute.env
+.env
+
