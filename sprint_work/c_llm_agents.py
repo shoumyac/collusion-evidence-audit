@@ -71,7 +71,7 @@ class _AnthropicShim:
                 system = messages[0]["content"]
                 # newer Claude models reject `temperature`; sampling is left at the API default
                 r = shim._c.messages.create(model=model, system=system, messages=messages[1:], max_tokens=max_tokens,
-                                            thinking={"type": "disabled"})
+                                            thinking={"type": "between_tools" if "sonnet" in model else "disabled"})
                 shim.in_tok += r.usage.input_tokens
                 shim.out_tok += r.usage.output_tokens
                 text = "".join(b.text for b in r.content if getattr(b, "type", "") == "text")
