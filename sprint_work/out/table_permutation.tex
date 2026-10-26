@@ -1,0 +1,14 @@
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{2}{c}{say} & \multicolumn{2}{c}{say, prompt words masked} & \multicolumn{2}{c}{do} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+model & observed & shuffled mean (max) & observed & shuffled mean (max) & observed & shuffled mean (max) \\
+\midrule
+Qwen2.5-7B & 1.00 & 0.50 (0.66) & 1.00 & 0.51 (0.66) & 0.97 & 0.47 (0.68) \\
+Qwen2.5-32B & 1.00 & 0.49 (0.69) & 1.00 & 0.49 (0.70) & 0.98 & 0.47 (0.64) \\
+Phi-4 & 1.00 & 0.49 (0.65) & 1.00 & 0.49 (0.64) & 0.99 & 0.48 (0.65) \\
+Mistral-Nemo-12B & 1.00 & 0.50 (0.71) & 1.00 & 0.50 (0.69) & 0.74 & 0.48 (0.66) \\
+Claude Haiku 5.5 & 1.00 & 0.49 (0.70) & 1.00 & 0.50 (0.71) & 0.80 & 0.47 (0.63) \\
+Claude Sonnet 5.5 & 1.00 & 0.50 (0.69) & 1.00 & 0.50 (0.68) & 0.93 & 0.48 (0.63) \\
+\bottomrule
+\end{tabular}

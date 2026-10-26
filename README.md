@@ -23,13 +23,18 @@ transcripts in `results/`) and `util/` (poseidon_compute). We import it from a s
 | `sprint_work/modal_host.py`, `c_llm_agents.py` | LLM firms in the repo's pricing game: open-weight models via vLLM on Modal, Claude via the Anthropic API; silent, paraphrase and reworded-prompt controls |
 | `sprint_work/d_score_llm.py`, `e_llm_auditor.py`, `h_auditor_examples.py` | Repo detectors on LLM transcripts; cross-validated say-vs-do classifiers; blind LLM auditors (Claude Sonnet 5.5 and Qwen2.5-7B) |
 | `sprint_work/f_report_assets.py`, `g_make_tables.py`, `k_verify_report_numbers.py` | Build every figure, table and number in the report from saved outputs; check the numbers quoted in the text |
+| `sprint_work/m_permutation_and_interaction.py`, `n_independent_checks.py` | Label-permutation test of the say/do classifiers (200 shuffles); difference-of-differences interaction estimates with bootstrap CIs (no LLM calls); recomputation of five headline numbers from the raw files |
+| `sprint_work/o_variants.py` | Claude agents under four prompt wordings (v1 to v4) plus the swap control under prompt 3: prices with bootstrap CIs, collude effect, blind-auditor AUROC, message rates, distinct paths |
+| `colab/swap_controls_open_weights.ipynb`, `colab/colab_bundle.zip`, `colab/swap_results.zip` | Colab notebook that ran the swap control for the four open-weight models on Modal GPUs, its input bundle and the returned runs (now in `sprint_work/out/llm/<model>/{honest,collude}_swap`) |
+| `sprint_work/q_auction_agents.py`, `sprint_work/r_auction_analysis.py` | Second game: first-price auction with Claude firms (honest, collude, swap), and its bootstrap analysis |
+| `sprint_work/p_path_cluster_ci.py` | Confidence intervals that resample clusters of identical-path runs, compared with the ordinary run-level bootstrap |
 | `kit/collusion_audit_kit.py` (+ tests) | Small dependency-light helpers: distinct-run counting, batch calibration, held-out rates, manipulation check, AUROC with CI |
 | `sprint_work/out/` | Raw per-batch results (JSONL), summaries (JSON/CSV), LLM transcripts, figures |
 
 Also: `VERIFY_YOURSELF.md` lists five headline numbers each author should recompute from the saved files, and
 `sprint_work/l_distinct_and_words.py` counts distinct price paths per condition and lists the top words per model.
 Controls in the LLM game: `silent` (no message channel), `para` (rival's messages paraphrased), `swap` (rival's messages
-taken from a different run) and `--variant v2` (reworded prompts).
+taken from a different run) and `--variant v2|v3|v4` (v2 and v4 reworded prompts, v3 a strict independent-play honest baseline with the v1 collusion prompt; v3 and v4 for the Claude models only).
 
 Runs that were discarded: Claude runs with a 120-token reply cap (truncation inflated prices) were archived locally
 under `sprint_work/out/llm/_superseded_maxtok120/` (not committed) and are not used anywhere in the report.

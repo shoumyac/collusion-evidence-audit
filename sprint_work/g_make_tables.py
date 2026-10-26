@@ -99,11 +99,11 @@ r4 = []
 for fam, label in (("claude-haiku-5-5", "Claude Haiku 5.5"), ("claude-sonnet-5-5", "Claude Sonnet 5.5")):
     c, c2 = L[fam]["conditions"], L[fam + "-v2"]["conditions"]
     r4.append(f"{label} & {pc(c['honest'])} & {pc(c['collude'])} & {pc(c.get('honest_para'))} & {pc(c.get('collude_para'))} & "
-              f"{pc(c.get('honest_swap'))} & {pc(c.get('collude_swap'))} & {pc(c2.get('honest'))} & {pc(c2.get('collude'))} \\\\")
-tab4 = ("\\begin{tabular}{lcccccccc}\n\\toprule\n"
-        " & \\multicolumn{2}{c}{prompt 1 (main)} & \\multicolumn{2}{c}{rival's messages paraphrased} & \\multicolumn{2}{c}{rival's messages from another run} & \\multicolumn{2}{c}{prompt 2 (reworded)}\\\\\n"
-        "\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}\\cmidrule(lr){8-9}\n"
-        "model & honest & collude & honest & collude & honest & collude & honest & collude \\\\\n\\midrule\n"
+              f"{pc(c.get('honest_swap'))} & {pc(c.get('collude_swap'))} \\\\")
+tab4 = ("\\begin{tabular}{lcccccc}\n\\toprule\n"
+        " & \\multicolumn{2}{c}{prompt 1 (main)} & \\multicolumn{2}{c}{rival's messages paraphrased} & \\multicolumn{2}{c}{rival's messages from another run}\\\\\n"
+        "\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}\n"
+        "model & honest & collude & honest & collude & honest & collude \\\\\n\\midrule\n"
         + "\n".join(r4) + "\n\\bottomrule\n\\end{tabular}\n")
 (out / "table4.tex").write_text(tab4)
 

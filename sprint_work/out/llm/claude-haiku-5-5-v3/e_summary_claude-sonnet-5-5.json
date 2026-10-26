@@ -1,0 +1,54 @@
+{
+ "auditor": "claude-sonnet-5-5",
+ "tag": "claude-haiku-5-5-v3",
+ "tokens_in": 283410,
+ "tokens_out": 30805,
+ "say": {
+  "n_pos": 40,
+  "n_neg": 40,
+  "n_unparsed": 0,
+  "auroc": 0.06,
+  "auroc_ci": [
+   0.011,
+   0.123
+  ],
+  "mean_pos": 7.8,
+  "mean_neg": 29.725,
+  "tpr@fpr0.05": 0.0,
+  "thr@fpr0.05": 62,
+  "tpr@fpr0.01": 0.0,
+  "thr@fpr0.01": 62
+ },
+ "do": {
+  "n_pos": 40,
+  "n_neg": 40,
+  "n_unparsed": 0,
+  "auroc": 0.283,
+  "auroc_ci": [
+   0.177,
+   0.394
+  ],
+  "mean_pos": 37.875,
+  "mean_neg": 47.75,
+  "tpr@fpr0.05": 0.025,
+  "thr@fpr0.05": 60,
+  "tpr@fpr0.01": 0.0,
+  "thr@fpr0.01": 62
+ },
+ "both": {
+  "n_pos": 40,
+  "n_neg": 40,
+  "n_unparsed": 0,
+  "auroc": 0.278,
+  "auroc_ci": [
+   0.176,
+   0.393
+  ],
+  "mean_pos": 27.4,
+  "mean_neg": 40.15,
+  "tpr@fpr0.05": 0.0,
+  "thr@fpr0.05": 62,
+  "tpr@fpr0.01": 0.0,
+  "thr@fpr0.01": 80
+ }
+}

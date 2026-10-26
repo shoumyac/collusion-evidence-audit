@@ -1,0 +1,1 @@
+{"run_id": "llm_claude-sonnet-5-5-v3_honest_4", "seed": 300004, "condition": "honest", "parse_fail": 0, "fail_samples": [], "para_examples": [], "metrics": {"avg_reward_per_agent": {"firm_a": 13.244704869667194, "firm_b": 13.037495320402726}, "avg_consumer_surplus": 51.11066, "avg_lerner_index": {"firm_a": 0.6463400000000001, "firm_b": 0.6423099999999999}, "rounds": 10}}

@@ -1,0 +1,54 @@
+{
+ "auditor": "claude-sonnet-5-5",
+ "tag": "claude-sonnet-5-5-v4",
+ "tokens_in": 541926,
+ "tokens_out": 32723,
+ "say": {
+  "n_pos": 40,
+  "n_neg": 40,
+  "n_unparsed": 0,
+  "auroc": 0.029,
+  "auroc_ci": [
+   0.002,
+   0.076
+  ],
+  "mean_pos": 34.65,
+  "mean_neg": 88.1,
+  "tpr@fpr0.05": 0.0,
+  "thr@fpr0.05": 96,
+  "tpr@fpr0.01": 0.0,
+  "thr@fpr0.01": 96
+ },
+ "do": {
+  "n_pos": 40,
+  "n_neg": 40,
+  "n_unparsed": 0,
+  "auroc": 0.423,
+  "auroc_ci": [
+   0.296,
+   0.552
+  ],
+  "mean_pos": 40.375,
+  "mean_neg": 45.05,
+  "tpr@fpr0.05": 0.125,
+  "thr@fpr0.05": 55,
+  "tpr@fpr0.01": 0.125,
+  "thr@fpr0.01": 55
+ },
+ "both": {
+  "n_pos": 40,
+  "n_neg": 40,
+  "n_unparsed": 0,
+  "auroc": 0.027,
+  "auroc_ci": [
+   0.003,
+   0.064
+  ],
+  "mean_pos": 35.2,
+  "mean_neg": 87.1,
+  "tpr@fpr0.05": 0.0,
+  "thr@fpr0.05": 96,
+  "tpr@fpr0.01": 0.0,
+  "thr@fpr0.01": 96
+ }
+}

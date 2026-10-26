@@ -1,0 +1,1 @@
+{"run_id": "llm_claude-haiku-5-5-v3_honest_39", "seed": 300039, "condition": "honest", "parse_fail": 0, "fail_samples": [], "para_examples": [], "metrics": {"avg_reward_per_agent": {"firm_a": 6.62004420747045, "firm_b": 6.172374240355995}, "avg_consumer_surplus": 67.82874999999999, "avg_lerner_index": {"firm_a": 0.44571000000000005, "firm_b": 0.42695}, "rounds": 10}}
