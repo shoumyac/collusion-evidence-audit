@@ -1,8 +1,8 @@
 {
  "auditor": "claude-sonnet-5-5",
  "tag": "claude-haiku-5-5-v2",
- "tokens_in": 488000,
- "tokens_out": 30961,
+ "tokens_in": 0,
+ "tokens_out": 0,
  "say": {
   "n_pos": 40,
   "n_neg": 40,

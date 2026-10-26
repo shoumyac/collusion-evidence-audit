@@ -1,0 +1,326 @@
+{
+ "Qwen2.5-7B-Instruct": {
+  "all": {
+   "collude_words": [
+    "coordinate",
+    "maximum",
+    "coordination",
+    "stick",
+    "maximized",
+    "these",
+    "aligning",
+    "sustained",
+    "benefit",
+    "up"
+   ],
+   "honest_words": [
+    "slightly",
+    "rival's",
+    "rival",
+    "while",
+    "competitive",
+    "customers",
+    "share",
+    "attract",
+    "but",
+    "lower"
+   ]
+  },
+  "masked": {
+   "collude_words": [
+    "maximum",
+    "coordination",
+    "stick",
+    "maximized",
+    "these",
+    "aligning",
+    "sustained",
+    "benefit",
+    "up",
+    "mutual"
+   ],
+   "honest_words": [
+    "slightly",
+    "while",
+    "competitive",
+    "share",
+    "attract",
+    "lower",
+    "their",
+    "match",
+    "given",
+    "response"
+   ]
+  }
+ },
+ "Qwen2.5-32B-Instruct": {
+  "all": {
+   "collude_words": [
+    "benefit",
+    "predictable",
+    "prioritize",
+    "uphold",
+    "provide",
+    "consistency",
+    "benefiting",
+    "companies",
+    "benefits",
+    "achieve"
+   ],
+   "honest_words": [
+    "first",
+    "given",
+    "i",
+    "share",
+    "rival's",
+    "rival",
+    "my",
+    "i'll",
+    "set",
+    "increase"
+   ]
+  },
+  "masked": {
+   "collude_words": [
+    "benefit",
+    "predictable",
+    "prioritize",
+    "uphold",
+    "provide",
+    "consistency",
+    "benefiting",
+    "companies",
+    "benefits",
+    "achieve"
+   ],
+   "honest_words": [
+    "first",
+    "given",
+    "i",
+    "share",
+    "my",
+    "i'll",
+    "set",
+    "increase",
+    "lower",
+    "attract"
+   ]
+  }
+ },
+ "phi-4": {
+  "all": {
+   "collude_words": [
+    "everyone",
+    "prosperous",
+    "thriving",
+    "vital",
+    "come",
+    "prosperity",
+    "practices",
+    "health",
+    "companies",
+    "achieved"
+   ],
+   "honest_words": [
+    "adjust",
+    "slightly",
+    "increase",
+    "share",
+    "observing",
+    "response",
+    "slight",
+    "adjustments",
+    "strategically",
+    "adjusting"
+   ]
+  },
+  "masked": {
+   "collude_words": [
+    "everyone",
+    "prosperous",
+    "thriving",
+    "vital",
+    "come",
+    "prosperity",
+    "practices",
+    "health",
+    "companies",
+    "achieved"
+   ],
+   "honest_words": [
+    "adjust",
+    "slightly",
+    "increase",
+    "share",
+    "observing",
+    "response",
+    "slight",
+    "adjustments",
+    "strategically",
+    "adjusting"
+   ]
+  }
+ },
+ "Mistral-Nemo-12B": {
+  "all": {
+   "collude_words": [
+    "conclude",
+    "mutual",
+    "established",
+    "benefit",
+    "firms",
+    "collaboration",
+    "uphold",
+    "successful",
+    "series",
+    "both"
+   ],
+   "honest_words": [
+    "share",
+    "test",
+    "move",
+    "i'll",
+    "rival",
+    "see",
+    "edge",
+    "based",
+    "an",
+    "match"
+   ]
+  },
+  "masked": {
+   "collude_words": [
+    "conclude",
+    "mutual",
+    "established",
+    "benefit",
+    "collaboration",
+    "uphold",
+    "successful",
+    "series",
+    "mutually",
+    "sustaining"
+   ],
+   "honest_words": [
+    "share",
+    "test",
+    "move",
+    "i'll",
+    "edge",
+    "based",
+    "match",
+    "next",
+    "we'll",
+    "while"
+   ]
+  }
+ },
+ "claude-haiku-5-5": {
+  "all": {
+   "collude_words": [
+    "help",
+    "price-fixing",
+    "competitively",
+    "law",
+    "antitrust",
+    "use",
+    "under",
+    "write",
+    "independent",
+    "can't"
+   ],
+   "honest_words": [
+    "future",
+    "long",
+    "there",
+    "undercutting",
+    "we've",
+    "undercut",
+    "now",
+    "capture",
+    "more",
+    "retaliation"
+   ]
+  },
+  "masked": {
+   "collude_words": [
+    "help",
+    "price-fixing",
+    "competitively",
+    "law",
+    "antitrust",
+    "under",
+    "write",
+    "independent",
+    "can't",
+    "here's"
+   ],
+   "honest_words": [
+    "future",
+    "long",
+    "we've",
+    "undercut",
+    "now",
+    "capture",
+    "retaliation",
+    "slightly",
+    "matching",
+    "deter"
+   ]
+  }
+ },
+ "claude-sonnet-5-5": {
+  "all": {
+   "collude_words": [
+    "premium",
+    "chase",
+    "short-term",
+    "positioning",
+    "course",
+    "consistency",
+    "adjusting",
+    "focus",
+    "discounting",
+    "products"
+   ],
+   "honest_words": [
+    "war",
+    "aiming",
+    "mutual",
+    "mutually",
+    "avoid",
+    "profits",
+    "risk",
+    "fair",
+    "shade",
+    "whatever"
+   ]
+  },
+  "masked": {
+   "collude_words": [
+    "premium",
+    "chase",
+    "short-term",
+    "positioning",
+    "course",
+    "consistency",
+    "adjusting",
+    "focus",
+    "discounting",
+    "moving"
+   ],
+   "honest_words": [
+    "war",
+    "aiming",
+    "mutual",
+    "mutually",
+    "avoid",
+    "profits",
+    "risk",
+    "fair",
+    "shade",
+    "whatever"
+   ]
+  }
+ }
+}

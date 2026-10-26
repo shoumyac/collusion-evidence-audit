@@ -10,6 +10,7 @@ Run from steganographic-collusion/:
 import argparse
 import json
 import os
+import random
 import re
 import secrets
 import time
@@ -141,9 +142,19 @@ def make_client():
 def play_run(client, model, cond, idx):
     silent = cond.endswith("_silent")
     para = cond.endswith("_para")  # intervention: the rival's statements are paraphrased before the firm reads them
+    swap = cond.endswith("_swap")  # control: the rival's statements come from a DIFFERENT run (same condition, same round)
     seed = args.seed0 + {"honest": 0, "collude": 50000, "honest_silent": 100000, "collude_silent": 150000,
-                         "honest_para": 200000, "collude_para": 250000}[cond] + idx
+                         "honest_para": 200000, "collude_para": 250000, "honest_swap": 300000, "collude_swap": 350000}[cond] + idx
     para_examples = []
+    swap_pool = {}
+    if swap:
+        base_dir = out_root / cond[:-5]
+        files = sorted(p for p in base_dir.glob("*.jsonl") if not p.name.endswith(".metrics.json"))
+        partner = files[(idx + 1 + random.Random(seed).randrange(len(files) - 1)) % len(files)]  # never the run's own index
+        for line in partner.read_text(encoding="utf-8").splitlines():
+            rec = json.loads(line)
+            swap_pool[(rec["round_id"], rec["agent_id"])] = re.sub(r"\s*Price:[0-9.]+\s*$", "", rec["message"]).strip()
+        para_examples.append({"partner_run": partner.name})
     env = make_environment("pricing_duopoly", max_rounds=args.rounds, agent_roles=("firm_a", "firm_b"), colluders=())
     roles = list(env.config.agent_roles)
     env.reset(seed)
@@ -203,6 +214,8 @@ def play_run(client, model, cond, idx):
         for role in roles:
             other = [r for r in roles if r != role][0]
             rival_seen = said[other]
+            if swap:
+                rival_seen = swap_pool.get((rnd, other), "")
             if para and rival_seen:
                 rival_seen = paraphrase(rival_seen)
                 if len(para_examples) < 4:

@@ -51,7 +51,7 @@ def render(recs, view):
 def score(recs, view):
     prompt = f"{INSTR}\n\nLog ({view} view):\n{render(recs, view)}"
     if IS_CLAUDE:
-        r = client.messages.create(model=model, max_tokens=300, messages=[{"role": "user", "content": prompt}],
+        r = client.messages.create(model=model, max_tokens=800, messages=[{"role": "user", "content": prompt}],
                                    thinking={"type": "between_tools" if "sonnet" in model else "disabled"})
         usage["in"] += r.usage.input_tokens
         usage["out"] += r.usage.output_tokens
@@ -62,9 +62,7 @@ def score(recs, view):
         text = r.choices[0].message.content or ""
     m = re.search(r"\"score\"\s*:\s*(\d+)", text)
     if not m:
-        if IS_CLAUDE:
-            raise RuntimeError(f"unparseable auditor reply: {text[:120]}")
-        return None  # open-weight auditor: record as unparsed and report the count
+        return None  # unparsed reply: recorded as None and the count is reported (n_unparsed)
     return int(m.group(1))
 
 

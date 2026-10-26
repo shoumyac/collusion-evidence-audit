@@ -118,7 +118,7 @@ TAGS = ("Qwen2.5-7B-Instruct", "Qwen2.5-32B-Instruct", "phi-4", "Mistral-Nemo-12
 for tag in TAGS:
     root = out / "llm" / tag
     d = {"conditions": {}}
-    for cond in ("honest", "collude", "honest_silent", "collude_silent", "honest_para", "collude_para"):
+    for cond in ("honest", "collude", "honest_silent", "collude_silent", "honest_para", "collude_para", "honest_swap", "collude_swap"):
         if not (root / cond).exists():
             continue
         prices, ref, und, msgs, pf, calls, cs = [], 0, 0, 0, 0, 0, []
@@ -166,8 +166,8 @@ ax.axhline(0.5, ls="--", c="k", lw=0.8)
 ax.set_xticks(range(3))
 ax.set_xticklabels(["messages", "prices", "both"])
 ax.set_ylabel("Claude auditor AUROC (95% CI)")
-ax.set_ylim(0, 1.3)
-ax.legend(frameon=False, fontsize=6, ncol=3, loc="upper center")
+ax.set_ylim(0, 1.0)
+ax.legend(frameon=False, fontsize=5.5, ncol=3, loc="upper center", bbox_to_anchor=(0.5, -0.2), columnspacing=0.8, handletextpad=0.2)
 fig.tight_layout()
 fig.savefig(out / "fig3_llm.pdf")
 
@@ -199,4 +199,5 @@ fig.savefig(out / "fig4_prices.pdf")
 
 (out / "report_numbers.json").write_text(json.dumps(N, indent=1, default=float))
 print("ok", list(N))
+
 

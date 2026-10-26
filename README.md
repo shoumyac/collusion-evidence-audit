@@ -26,6 +26,11 @@ transcripts in `results/`) and `util/` (poseidon_compute). We import it from a s
 | `kit/collusion_audit_kit.py` (+ tests) | Small dependency-light helpers: distinct-run counting, batch calibration, held-out rates, manipulation check, AUROC with CI |
 | `sprint_work/out/` | Raw per-batch results (JSONL), summaries (JSON/CSV), LLM transcripts, figures |
 
+Also: `VERIFY_YOURSELF.md` lists five headline numbers each author should recompute from the saved files, and
+`sprint_work/l_distinct_and_words.py` counts distinct price paths per condition and lists the top words per model.
+Controls in the LLM game: `silent` (no message channel), `para` (rival's messages paraphrased), `swap` (rival's messages
+taken from a different run) and `--variant v2` (reworded prompts).
+
 Runs that were discarded: Claude runs with a 120-token reply cap (truncation inflated prices) were archived locally
 under `sprint_work/out/llm/_superseded_maxtok120/` (not committed) and are not used anywhere in the report.
 

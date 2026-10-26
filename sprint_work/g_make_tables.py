@@ -40,6 +40,7 @@ tab1 = ("\\begin{tabular}{llrrrrrrr}\n\\toprule\n"
 (out / "table1.tex").write_text(tab1)
 
 L = N["LLM"]
+DIST = json.loads((out / "l_distinct.json").read_text())
 MAIN = {"Qwen2.5-7B-Instruct": "Qwen2.5-7B", "Qwen2.5-32B-Instruct": "Qwen2.5-32B", "phi-4": "Phi-4",
         "Mistral-Nemo-12B": "Mistral-Nemo-12B", "claude-haiku-5-5": "Claude Haiku 5.5", "claude-sonnet-5-5": "Claude Sonnet 5.5"}
 
@@ -69,17 +70,20 @@ for tag, label in MAIN.items():
     kn = lambda key: f"{bc[key]['k_flagged_p01']}/{bc[key]['n_batches']}" if key in bc else "--"
     sv = d["say_vs_do"]
     r3.append(f"{label} & {kn('honest|cross_run_mi')} & {kn('honest|welfare_shift')} & {kn('honest|linguistic_steganalysis')} & "
+              f"{kn('collude|cross_run_mi')} & {kn('collude|welfare_shift')} & {kn('collude|linguistic_steganalysis')} & "
               f"{ci(sv['auroc_say'], sv['auroc_say_ci'])} & {ci(sv['auroc_say_masked'], sv['auroc_say_masked_ci'])} & "
               f"{ci(sv['auroc_do'], sv['auroc_do_ci'])} \\\\")
-tab3 = ("\\begin{tabular}{lcccccc}\n\\toprule\n"
-        " & \\multicolumn{3}{c}{repo: honest batches flagged ($p\\le.01$)} & \\multicolumn{3}{c}{naive Bayes AUROC [95\\% CI], 5-fold CV}\\\\\n"
-        "\\cmidrule(lr){2-4}\\cmidrule(lr){5-7}\n"
-        "model & MI & welfare & linguistic & say & say, prompt words masked & do \\\\\n\\midrule\n"
+tab3 = ("\\begin{tabular}{lcccccccccc}\n\\toprule\n"
+        " & \\multicolumn{3}{c}{repo: honest batches flagged} & \\multicolumn{3}{c}{repo: colluding batches flagged} & \\multicolumn{3}{c}{naive Bayes AUROC [95\\% CI], 5-fold CV by run}\\\\\n"
+        "\\cmidrule(lr){2-4}\\cmidrule(lr){5-7}\\cmidrule(lr){8-10}\n"
+        "model & MI & welfare & ling. & MI & welfare & ling. & say & say, prompt words masked & do \\\\\n\\midrule\n"
         + "\n".join(r3) + "\n\\bottomrule\n\\end{tabular}\n")
 (out / "table3.tex").write_text(tab3)
 
+LABEL5 = dict(MAIN)
+LABEL5.update({"claude-haiku-5-5-v2": "Claude Haiku 5.5, prompt 2", "claude-sonnet-5-5-v2": "Claude Sonnet 5.5, prompt 2"})
 r5 = []
-for tag, label in MAIN.items():
+for tag, label in LABEL5.items():
     d = L[tag]
     a1, a2 = d.get("auditor"), d.get("auditor2")
     cell = lambda a, v: ci(a[v]["auroc"], a[v]["auroc_ci"]) if a else "--"
@@ -95,12 +99,24 @@ r4 = []
 for fam, label in (("claude-haiku-5-5", "Claude Haiku 5.5"), ("claude-sonnet-5-5", "Claude Sonnet 5.5")):
     c, c2 = L[fam]["conditions"], L[fam + "-v2"]["conditions"]
     r4.append(f"{label} & {pc(c['honest'])} & {pc(c['collude'])} & {pc(c.get('honest_para'))} & {pc(c.get('collude_para'))} & "
-              f"{pc(c2.get('honest'))} & {pc(c2.get('collude'))} \\\\")
-tab4 = ("\\begin{tabular}{lcccccc}\n\\toprule\n"
-        " & \\multicolumn{2}{c}{prompt 1 (main)} & \\multicolumn{2}{c}{prompt 1, rival's messages paraphrased} & \\multicolumn{2}{c}{prompt 2 (reworded)}\\\\\n"
-        "\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}\n"
-        "model & honest & collude & honest & collude & honest & collude \\\\\n\\midrule\n"
+              f"{pc(c.get('honest_swap'))} & {pc(c.get('collude_swap'))} & {pc(c2.get('honest'))} & {pc(c2.get('collude'))} \\\\")
+tab4 = ("\\begin{tabular}{lcccccccc}\n\\toprule\n"
+        " & \\multicolumn{2}{c}{prompt 1 (main)} & \\multicolumn{2}{c}{rival's messages paraphrased} & \\multicolumn{2}{c}{rival's messages from another run} & \\multicolumn{2}{c}{prompt 2 (reworded)}\\\\\n"
+        "\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}\\cmidrule(lr){8-9}\n"
+        "model & honest & collude & honest & collude & honest & collude & honest & collude \\\\\n\\midrule\n"
         + "\n".join(r4) + "\n\\bottomrule\n\\end{tabular}\n")
 (out / "table4.tex").write_text(tab4)
+
+r6 = []
+for tag, label in MAIN.items():
+    cells = []
+    for cond in ("honest", "collude", "honest_silent", "collude_silent"):
+        e = DIST.get(f"{tag}|{cond}")
+        cells.append(f"{e['distinct_price_paths']}/{e['runs']}" if e else "--")
+    r6.append(f"{label} & " + " & ".join(cells) + " \\\\")
+tab6 = ("\\begin{tabular}{lcccc}\n\\toprule\n"
+        "model & honest & collude & honest, silent & collude, silent \\\\\n\\midrule\n"
+        + "\n".join(r6) + "\n\\bottomrule\n\\end{tabular}\n")
+(out / "table6.tex").write_text(tab6)
 (out / "report_numbers.json").write_text(json.dumps(N, indent=1, default=float))
-print(tab1, tab2, tab3, tab4, tab5, sep="\n")
+print(tab4, tab6, sep="\n")
