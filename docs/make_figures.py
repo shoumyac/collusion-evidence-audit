@@ -242,6 +242,28 @@ def auditor():
     save(fig, "08_auditor.png")
 
 
+# ------------------------------------------------------------------ 09 heterogeneity (post-sprint analysis S)
+def heterogeneity():
+    r = load("s_heterogeneity.json")
+    fig, axs = plt.subplots(1, 2, figsize=(11.5, 4.6), sharex=True)
+    for ax, name, col in [(axs[0], "Claude Haiku 5.5", AMBER), (axs[1], "Claude Sonnet 5.5", NAVY)]:
+        m = r["by_wording"][name]; eff = m["effects"]
+        for i, e in enumerate(eff):
+            ax.errorbar(e["d"], i, xerr=1.96 * e["se"], fmt="s", color=col, ms=7, capsize=3, lw=1.6)
+            ax.text(e["d"] + 1.96 * e["se"] + 0.25, i, f"{e['d']:+.2f}", ha="left", va="center", fontsize=9, color=col)
+        y = len(eff) + 0.3
+        ax.fill_betweenx([y - 0.28, y + 0.28], m["ci"][0], m["ci"][1], color=col, alpha=0.9)
+        ax.plot([m["pred_interval"][0], m["pred_interval"][1]], [y + 0.75, y + 0.75], color=RED, lw=3, solid_capstyle="butt")
+        ax.text(m["pred_interval"][1], y + 0.75, f"  prediction interval [{m['pred_interval'][0]:+.1f}, {m['pred_interval'][1]:+.1f}]", color=RED, va="center", fontsize=9, ha="left")
+        ax.text(m["ci"][1], y, f"  pooled {m['mu']:+.2f}, I$^2$ = {100*m['I2']:.0f}%", va="center", fontsize=9, ha="left")
+        ax.axvline(0, color=GRAY, lw=1)
+        ax.set_yticks(list(range(len(eff))) + [y, y + 0.75]); ax.set_yticklabels([e["wording"] for e in eff] + ["pooled (random effects)", "new wording"])
+        ax.invert_yaxis(); ax.set_title(name, loc="left", fontsize=11.5, fontweight="bold", pad=10); ax.set_xlabel("effect of collusion instruction on price (95% CI)")
+    axs[0].set_xlim(-6.5, 11)
+    fig.suptitle("Across wordings the effect is almost all real heterogeneity, so a new wording could give nearly any sign", x=0.01, ha="left", fontsize=11.5, fontweight="bold")
+    fig.tight_layout(); save(fig, "09_heterogeneity.png")
+
+
 if __name__ == "__main__":
-    for fn in (hero, pseudorep, false_alarms, curve, prices, swap, wording, auction, auditor):
+    for fn in (hero, pseudorep, false_alarms, curve, prices, swap, wording, auction, auditor, heterogeneity):
         fn()

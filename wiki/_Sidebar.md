@@ -7,6 +7,7 @@
 * [Evidence Ladder](Evidence-Ladder)
 * [Data Guide](Data-Guide)
 * [Reproduce and Verify](Reproduce-and-Verify)
+* [Wording Heterogeneity](Wording-Heterogeneity)
 * [Audit Kit](Audit-Kit)
 * [FAQ](FAQ)
 * [Limitations and Roadmap](Limitations-and-Roadmap)

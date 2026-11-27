@@ -170,6 +170,25 @@ flowchart BT
 
 ---
 
+## After the sprint: how much does the wording matter?
+
+*New analysis, not in the submitted report. It uses only the saved transcripts and costs nothing to run (`sprint_work/s_heterogeneity.py`).*
+
+<img src="docs/img/09_heterogeneity.png" alt="Forest plot of the collusion effect across wordings" width="100%">
+
+| Set | Pooled effect [95% CI] | I-squared | 95% prediction interval for a new wording |
+| --- | --- | --- | --- |
+| Claude Haiku 5.5, 4 wordings | +0.24 [+0.01, +0.46] | 93% | [-0.80, +1.28] |
+| Claude Sonnet 5.5, 4 wordings | +0.97 [-0.43, +2.37] | 98% | [-5.84, +7.78] |
+| Six models, main prompt | +1.03 [+0.78, +1.29] | 93% | [+0.16, +1.91] |
+
+* Nearly all of the variation in Claude's effect across wordings is real heterogeneity, not sampling noise. In a descriptive 2 x 4 table (Claude model by wording), wording accounts for about 61% of the variation in the effect, model for 17%, and the interaction plus noise for the rest.
+* **More runs do not help; more wordings do.** With Sonnet's spread between wordings, quadrupling the runs per wording leaves the prediction interval essentially unchanged, while 16 wordings would narrow it to about [-2.2, +4.1].
+* Across the six models under one wording the effect is consistently positive, so the model matters less than the wording.
+* Caveats: four wordings is a small sample for estimating spread, the wordings are not a random draw from all possible wordings, and the intervals use a normal approximation.
+
+---
+
 ## What is pre-existing and what is new
 
 | | |
@@ -213,6 +232,7 @@ collusion-evidence-audit/
 | `sprint_work/m_permutation_and_interaction.py`, `n_independent_checks.py` | Label-permutation test of the say/do classifiers (200 shuffles); difference-of-differences estimates with bootstrap CIs; recomputation of five headline numbers from raw files |
 | `sprint_work/o_variants.py` | Claude agents under four prompt wordings plus the swap control under prompt 3 |
 | `sprint_work/p_path_cluster_ci.py` | Confidence intervals that resample clusters of identical-path runs |
+| `sprint_work/s_heterogeneity.py` | Post-sprint, no API calls: random-effects meta-analysis of the collusion effect across wordings and models, with prediction intervals |
 | `sprint_work/q_auction_agents.py`, `r_auction_analysis.py` | Second game: first-price auction with Claude firms (honest, collude, swap) and its bootstrap analysis |
 | `sprint_work/l_distinct_and_words.py` | Distinct price paths per condition and top words per model |
 | `colab/swap_controls_open_weights.ipynb` | Notebook that ran the swap control for the four open-weight models on Modal GPUs |
