@@ -20,8 +20,7 @@ MINUTES = 60
 
 image = (
     modal.Image.debian_slim(python_version="3.12")
-    .pip_install("vllm==0.10.2", "huggingface_hub[hf_transfer]")
-    .env({"HF_HUB_ENABLE_HF_TRANSFER": "1"})
+    .pip_install("vllm==0.10.2", "huggingface_hub")
 )
 hf_cache = modal.Volume.from_name("collusion-hf-cache", create_if_missing=True)
 app = modal.App("collusion-vllm")
@@ -38,5 +37,5 @@ app = modal.App("collusion-vllm")
 @modal.web_server(port=PORT, startup_timeout=10 * MINUTES)
 def serve():
     cmd = ["vllm", "serve", MODEL, "--host", "0.0.0.0", "--port", str(PORT),
-           "--max-model-len", "65536", "--enable-prefix-caching", "--gpu-memory-utilization", "0.92"]
+           "--max-model-len", "16384", "--enable-prefix-caching", "--gpu-memory-utilization", "0.92"]
     subprocess.Popen(" ".join(cmd), shell=True)
