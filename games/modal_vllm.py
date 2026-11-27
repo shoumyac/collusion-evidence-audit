@@ -22,6 +22,7 @@ MINUTES = 60
 image = (
     modal.Image.debian_slim(python_version="3.12")
     .pip_install("vllm==0.10.2", "transformers==4.56.2")
+    .env({"COLLUSION_MODEL": MODEL})
 )
 hf_cache = modal.Volume.from_name("collusion-hf-cache", create_if_missing=True)
 app = modal.App(os.environ.get("COLLUSION_APP", "collusion-vllm"))
