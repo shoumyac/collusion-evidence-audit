@@ -1,0 +1,28 @@
+name: checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install numpy scipy matplotlib pytest
+      - name: Audit kit tests
+        run: cd kit && python -m pytest -q
+      - name: Check every number quoted in the report against saved outputs
+        run: python sprint_work/k_verify_report_numbers.py | tee verify.log && ! grep -q "^MISMATCH " verify.log
+      - name: Redraw the README figures
+        run: python docs/make_figures.py
+      - name: Scan for committed secrets
+        run: |
+          if git grep -n -E "sk-ant-[A-Za-z0-9_-]{10,}|hf_[A-Za-z0-9]{20,}|ak-[A-Za-z0-9]{20,}" -- . ':!*.pdf' ':!*.zip' ':!*.png'; then
+            echo "Possible secret found"; exit 1
+          fi

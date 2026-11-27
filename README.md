@@ -10,6 +10,7 @@
 ![Models](https://img.shields.io/badge/LLM%20agents-6%20models-D1495B?style=flat-square)
 ![Games](https://img.shields.io/badge/Games-pricing%20%2B%20auction-1F3A5F?style=flat-square)
 ![Python](https://img.shields.io/badge/Python-3.11-2A9D8F?style=flat-square)
+[![checks](https://github.com/shoumyac/collusion-evidence-audit/actions/workflows/checks.yml/badge.svg)](https://github.com/shoumyac/collusion-evidence-audit/actions/workflows/checks.yml)
 
 **[Read the report (PDF)](report/report.pdf)** &nbsp;|&nbsp; **[Wiki](https://github.com/shoumyac/collusion-evidence-audit/wiki)** &nbsp;|&nbsp; **[Key findings](#key-findings-at-a-glance)** &nbsp;|&nbsp; **[Reproduce](#reproduce)** &nbsp;|&nbsp; **[Verify the numbers yourself](VERIFY_YOURSELF.md)**
 

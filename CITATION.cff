@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Auditing a Collusion Detector: Unit of Replication, Calibration and Say-versus-Do Gaps in LLM Pricing Agents"
+type: software
+authors:
+  - family-names: Chowdhury
+    given-names: Shoumya
+    affiliation: "University of Melbourne"
+  - family-names: Das
+    given-names: Anmita
+    affiliation: "University of Melbourne"
+repository-code: "https://github.com/shoumyac/collusion-evidence-audit"
+date-released: "2026-10-26"
+abstract: "An audit of the ColludeBench collusion detector stack: how many independent runs stand behind its thresholds, whether its error rates hold on fresh data, and whether the labels of its positive and negative controls match what LLM agents do. Apart Research AI Collusion Research Sprint, Track 2 (Detection and Audit)."
+keywords:
+  - AI safety
+  - collusion
+  - LLM agents
+  - auditing
+  - calibration
