@@ -17,6 +17,8 @@ jobs:
         run: pip install numpy scipy matplotlib pytest
       - name: Audit kit tests
         run: cd kit && python -m pytest -q
+      - name: Games runner tests (stub backend, no API calls)
+        run: python -m pytest games/tests -q
       - name: Check every number quoted in the report against saved outputs
         run: python sprint_work/k_verify_report_numbers.py | tee verify.log && ! grep -q "^MISMATCH " verify.log
       - name: Redraw the README figures

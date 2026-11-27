@@ -13,3 +13,5 @@ report/*.aux
 report/*.log
 report/*.out
 sprint_work/out/llm/_superseded_maxtok120/
+games_out/
+.pytest_cache/
