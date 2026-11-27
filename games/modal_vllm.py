@@ -11,10 +11,11 @@ Edit MODEL and GPU below. A single 8B model fits on one A100 40GB or L40S. Check
 """
 import subprocess
 
+import os
 import modal
 
-MODEL = "Qwen/Qwen3-8B"
-GPU = "A100-40GB"
+MODEL = os.environ.get("COLLUSION_MODEL", "Qwen/Qwen3-8B")
+GPU = os.environ.get("COLLUSION_GPU", "A100-40GB")
 PORT = 8000
 MINUTES = 60
 
@@ -23,7 +24,7 @@ image = (
     .pip_install("vllm==0.10.2", "transformers==4.56.2")
 )
 hf_cache = modal.Volume.from_name("collusion-hf-cache", create_if_missing=True)
-app = modal.App("collusion-vllm")
+app = modal.App(os.environ.get("COLLUSION_APP", "collusion-vllm"))
 
 
 @app.function(
