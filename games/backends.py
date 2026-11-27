@@ -72,8 +72,11 @@ class OpenAICompat:
         self.key = os.environ.get("LLM_API_KEY", "none")
 
     def ask(self, system: str, user: str, max_tokens: int = 250):
-        body = json.dumps({"model": self.m, "temperature": 0.7, "max_tokens": max_tokens,
-                           "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}]}).encode()
+        req_body = {"model": self.m, "temperature": 0.7, "max_tokens": max_tokens,
+                    "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}]}
+        if os.environ.get("LLM_THINKING", "off") == "off":  # Qwen3-style models otherwise spend the token budget on <think> blocks
+            req_body["chat_template_kwargs"] = {"enable_thinking": False}
+        body = json.dumps(req_body).encode()
         err = None
         for a in range(3):
             try:
