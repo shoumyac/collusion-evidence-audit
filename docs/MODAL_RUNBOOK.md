@@ -22,6 +22,10 @@ modal deploy games/modal_vllm.py
 
 Modal prints a URL ending in `.modal.run`. The first request downloads the model and takes several minutes; later requests are fast. The GPU shuts itself down 5 minutes after the last request.
 
+## Hand-off: Claude runs the experiments
+
+Only the deploy needs your Modal login, and it cannot be delegated (an interactive login that I cannot complete from the cloud workspace, and account tokens must not be shared). Once the model is deployed, the endpoint is a plain URL, so send the `.modal.run` URL and Claude can run the whole experiment from its own workspace, commit the results and analyse them. The endpoint has no password, so run `modal app stop collusion-vllm` as soon as the runs finish.
+
 ## Pilot (about 20 runs, check the cost first)
 
 ```powershell
