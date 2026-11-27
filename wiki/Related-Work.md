@@ -21,3 +21,9 @@ Mathew et al. and Motwani et al. (secret and steganographic collusion), Fish et 
 1. Read the three closest papers in full before the next draft.
 2. Rewrite the contribution statement so it does not claim novelty over "collusion on paper" or pricing-agent monitors, and states clearly what is new: the calibration unit audit, the label-validity controls with swap and wording, and the evidence ladder.
 3. Look for more work on same-model correlation between runs, because it affects how many independent units a batch of runs really contains.
+
+## Update 27 Nov 2026
+
+Read for method and limitations: Mohsin and Rahman (2611.10620), Tran and Yu (2610.28787), Shi et al. (2609.24967), Cahyono (2610.39660), Colosseum (2602.15198), Xu et al. (2607.26385), Lee and Park (2609.18346). Cited by stated design only: Ghanem (2608.02698, placeholder results), Denamganai (2610.37849).
+
+See `docs/RELATED_WORK_GAP_MAP.md` for limitations and planned additions, and `docs/REAUDIT_PUBLISHED.md` for our re-analysis of the Shi et al. and Cahyono releases.
