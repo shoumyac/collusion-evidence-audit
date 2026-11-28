@@ -72,7 +72,7 @@ def main(argv=None):
     p.add_argument("--model", default="stub")
     p.add_argument("--runs", type=int, default=6)
     p.add_argument("--conditions", default="honest,collude")
-    p.add_argument("--wording", type=int, default=1, choices=[1, 2, 3, 4])
+    p.add_argument("--wording", type=int, default=1, choices=[1, 2, 3, 4, 5])
     p.add_argument("--rounds", type=int, default=10)
     p.add_argument("--seed0", type=int, default=0)
     p.add_argument("--out", default=str(ROOT / "games_out"))
