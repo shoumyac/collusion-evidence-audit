@@ -1,0 +1,11 @@
+{
+ "game": "pricing",
+ "model": "Qwen/Qwen3-32B",
+ "wording": 3,
+ "rounds": 10,
+ "conditions": [
+  "honest_swap",
+  "collude_swap",
+  "collude_optout_swap"
+ ]
+}
