@@ -16,3 +16,5 @@ sprint_work/out/llm/_superseded_maxtok120/
 games_out/
 .pytest_cache/
 report/*.toc
+report/*.fdb_latexmk
+report/*.fls
