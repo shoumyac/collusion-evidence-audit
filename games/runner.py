@@ -65,6 +65,46 @@ def run_one(game_name, backend, cost, cond, wording, rounds, seed, partner_msgs=
     return rows
 
 
+def load_rows(path: Path) -> dict:
+    out: dict = {}
+    for l in path.read_text().splitlines():
+        if l.strip():
+            r = json.loads(l)
+            out[(r["round_id"], r["agent_id"])] = (r["action"], r["said"])
+    return out
+
+
+DEV_ROUND, DEV_PRICE = 4, 3.0   # forced one-round undercut by the puppet (pricing only), below the Nash price 4.6
+
+
+def run_puppet(game_name, backend, cost, cond, wording, rounds, seed, live_role, text_src, act_src, max_tokens=250, dev=False):
+    """One live agent against open-loop puppet rivals. cond = 'pup-<collude|honest>-<T><A>[-coh]'.
+    The puppets' texts come from text_src and their actions from act_src (dicts (round, role) -> (action, said)); the live
+    agent's profit is computed by the game against the puppets' actions, so the history it sees is consistent."""
+    g = make_game(game_name, rounds)
+    g.reset(seed)
+    base = cond.split("-")[1]
+    puppets = [r for r in g.roles if r != live_role]
+    hist, rows = [], []
+    for rd in range(rounds):
+        sys_p = system_prompt(g, live_role, base, wording, rounds)
+        usr = user_prompt(g, live_role, hist, rd + 1, rounds)
+        text, ti, to = backend.ask(sys_p, usr, max_tokens)
+        cost.add(ti, to)
+        act, said_live = parse_action(text, g.action, g)
+        acts = {live_role: act}
+        said = {live_role: said_live}
+        for o in puppets:
+            acts[o] = DEV_PRICE if (dev and rd == DEV_ROUND) else act_src[(rd, o)][0]
+            said[o] = text_src[(rd, o)][1]
+        obs = {r: dict(g.observe(r)) for r in g.roles}
+        rew, info = g.step(acts)
+        hist.append({"r": rd + 1, "said": said, "act": acts, "rew": rew, "seen": {live_role: {o: said[o] for o in puppets}}})
+        rows.append({"run_id": f"{cond}_{seed}", "round_id": rd, "agent_id": live_role, "action": act, "said": said_live, "reward": rew[live_role],
+                     "info": {k: v for k, v in info.items() if k != "values"}, "obs": obs[live_role], "live_role": live_role})
+    return rows
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--game", default="pricing", choices=["pricing", "auction", "cournot"])
@@ -98,6 +138,16 @@ def main(argv=None):
             if f.exists():
                 continue
             pm = None
+            if c.startswith("pup-"):
+                parts = c.split("-"); T, A = parts[2][0], parts[2][1]; dev = len(parts) > 3 and parts[3] == "dev"; coh = len(parts) > 3
+                nm = {"c": "collude", "h": "honest"}
+                ts = root / nm[T] / f"run_{a.seed0 + (i + 1) % a.runs}.jsonl"
+                as_ = root / nm[A] / f"run_{a.seed0 + ((i + 1) if coh else (i + 2)) % a.runs}.jsonl"
+                if not (ts.exists() and as_.exists()):
+                    sys.exit(f"{c} needs source runs {ts} and {as_}")
+                roles = make_game(a.game, a.rounds).roles
+                jobs.append((c, a.seed0 + i, f, ("pup", roles[i % len(roles)], load_rows(ts), load_rows(as_), dev)))
+                continue
             if c.endswith("_swap") or c.endswith("_xswap"):
                 # _swap: text from another run of the same condition; _xswap: text from the opposite
                 # condition (collude reads honest-run text, honest reads collude-run text), cross-condition replay
@@ -114,7 +164,10 @@ def main(argv=None):
     def work(j):
         c, seed, f, pm = j
         cost.check_headroom(estimate_usd(a.model, 1))
-        rows = run_one(a.game, be, cost, c, a.wording, a.rounds, seed, pm, a.max_tokens)
+        if isinstance(pm, tuple):
+            rows = run_puppet(a.game, be, cost, c, a.wording, a.rounds, seed, pm[1], pm[2], pm[3], a.max_tokens, pm[4])
+        else:
+            rows = run_one(a.game, be, cost, c, a.wording, a.rounds, seed, pm, a.max_tokens)
         f.parent.mkdir(parents=True, exist_ok=True)
         tmp = f.with_suffix(".tmp")
         tmp.write_text("\n".join(json.dumps(r) for r in rows) + "\n")
