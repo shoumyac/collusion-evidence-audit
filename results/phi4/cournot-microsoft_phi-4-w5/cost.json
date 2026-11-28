@@ -1,0 +1,7 @@
+{
+ "calls": 3000,
+ "input_tokens": 2148693,
+ "output_tokens": 158903,
+ "usd": 0.0,
+ "budget_usd": null
+}

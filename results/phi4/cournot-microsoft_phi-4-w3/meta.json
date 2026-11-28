@@ -1,0 +1,11 @@
+{
+ "game": "cournot",
+ "model": "microsoft/phi-4",
+ "wording": 3,
+ "rounds": 10,
+ "conditions": [
+  "honest",
+  "collude",
+  "collude_optout"
+ ]
+}

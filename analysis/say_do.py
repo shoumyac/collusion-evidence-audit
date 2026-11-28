@@ -35,6 +35,6 @@ def run(root, model, nruns):
                     declines=sum(dec)/n))
     return out
 if __name__ == "__main__":
-    res = run("/home/claude/games_out_full", "Qwen_Qwen3-8B", 100) + run("/home/claude/games_out_32b", "Qwen_Qwen3-32B", 50)
+    res = run("/home/claude/games_out_full", "Qwen_Qwen3-8B", 100) + run("/home/claude/games_out_32b", "Qwen_Qwen3-32B", 50) + run("/home/claude/games_out_phi4", "microsoft_phi-4", 50)
     json.dump(res, open("analysis/say_do_results.json", "w"), indent=1)
     for r in res: print(r["model"][-3:], r["game"], r["w"], r["cond"].ljust(14), *(f"{k}={r[k]:.2f}" for k in ("say","do","say_not_do","do_not_say","declines")))

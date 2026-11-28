@@ -27,3 +27,20 @@ Levels matter as much as effects. In pricing the instructed 8B prices at about 8
 ## Limits
 
 One model family, two sizes, thinking off, no judge-based say-versus-do analysis, 50 runs per 32B cell, and Cournot wording 3 missing for the 32B. No multiplicity correction (the auction wording 2 32B result is the only one near zero). Cost was not logged by the runner; check Modal billing.
+
+
+## Addendum: third model (Microsoft Phi-4, 14B) and Cournot wording 5
+
+Phi-4 was run at 50 runs per cell on pricing, auction and Cournot wordings 1 to 3 and Cournot wording 5 (3,000 planned runs, 2,929 saved; Cournot wording 3 is partial, with 29 to 50 runs per cell). Raw runs are in results/phi4.
+
+| Game | Instruction effect, Phi-4 (collude minus honest) |
+|---|---|
+| Pricing | +2.41 [2.16, 2.66], +2.12 [1.89, 2.34], +2.28 [2.10, 2.48]; instructed price about 7.1 |
+| Auction | -0.68 [-1.21, -0.15], +0.14 [-0.32, 0.59], -1.05 [-1.85, -0.35] |
+| Cournot | -2.60, -3.48, -4.14 (wording 3 partial); wording 5 -2.18 [-2.87, -1.48] |
+
+- Swap control: intact minus swapped differences are between -0.58 and 0.24 in every cell. The partner-independence result now holds for three models.
+- Opt-out: no material change in pricing or Cournot. Explicit decline statements appear in at most 3% of opt-out messages (Phi-4), and in none for the Qwen models.
+- Cournot is a valid test for Phi-4. It moves total quantity toward the collusive total in all wordings, so the Qwen failure is a model capability issue, not a flaw in the game. The worked-example wording 5 was not needed for Phi-4 and was not run on the Qwen models (that would need redeploying them).
+- Effect size again depends on the model. Pricing effects are 1.9 to 2.7 (Qwen3-8B), 0.6 (Qwen3-32B) and 2.1 to 2.4 (Phi-4), so effect size does not track parameter count; it varies by model.
+- Say-versus-do (keyword screen, see SAY_DO_KEYWORD_PASS.md): Phi-4 shows no gap in pricing (say 0.70 to 0.84, do 0.98 to 1.00), but a modest one in the auction, where under instruction 16 to 23% of rounds contain coordination language without a collusive bid, with the caveat that the screen is crude.
