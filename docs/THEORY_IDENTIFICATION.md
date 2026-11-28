@@ -78,6 +78,18 @@ Reading: on prices of 1 to 10, no model's price responds to coordination languag
 
 With run-mean price as the unit (`E_design`, pricing): effect 1.9 to 2.7 (Qwen3-8B, Phi-4) and 0.6 (Qwen3-32B); run-level SD 0.4 to 0.8. At 50 runs per arm the minimum detectable effect (80% power, two-sided 5%) is 0.22 to 0.45 on the price scale, i.e. a text-mediated share of roughly 10 to 25% of the 8B and Phi-4 effect, and 35 to 65% of the 32B effect. For a share of 50% of the effect, 3 to 8 runs per arm suffice for 8B and Phi-4 (27 to 79 for 32B).
 
+## 5b. The cross-condition replay, run on Qwen3-8B (pricing)
+
+Run: `games/run_xswap.sh`, analysis `analysis/xswap_analysis.py`, data `results_xswap/qwen3_8b`, output `analysis/xswap_qwen3_8b.json`. 100 runs per cell (one honest_xswap run missing in wording 1), three wordings, 10 rounds, 2 firms. Effects are run-mean price differences with 95% bootstrap intervals over runs.
+
+| wording | TE (collude - honest) | TM: collude - collude_xswap | swap contrast | DE: collude_xswap - honest | honest agents reading collude text |
+|---|---|---|---|---|---|
+| 1 | +2.74 [+2.56, +2.91] | +0.12 [-0.04, +0.28] | -0.05 [-0.25, +0.13] | +2.62 [+2.46, +2.77] | -0.32 [-0.47, -0.18] |
+| 2 | +1.88 [+1.72, +2.05] | +0.02 [-0.11, +0.15] | +0.03 [-0.10, +0.16] | +1.86 [+1.69, +2.04] | -0.16 [-0.36, +0.05] |
+| 3 | +2.42 [+2.20, +2.65] | +0.28 [+0.12, +0.45] | +0.14 [-0.05, +0.33] | +2.13 [+1.94, +2.32] | +0.30 [+0.04, +0.56] |
+
+Reading: a colluding Qwen3-8B that reads honest-run text instead of collusive text prices 0.02 to 0.28 lower, i.e. 1% to 12% of the instruction effect; 88% to 99% is direct (the instruction in its own prompt). The text effect is not zero in wording 3 (+0.28 [+0.12, +0.45]), it changes sign for honest agents across wordings (-0.32 in wording 1, +0.30 in wording 3), and the same-condition swap contrast was close to zero in all three, as Theorem 2 predicts for a small text effect. This single-model, single-game result supports the original claim in a bounded form: for Qwen3-8B pricing the rise is mostly parallel obedience, and the text channel contributes at most about 0.3 price units. It says nothing about the other models, games or about the action channel (the rival's visible prices are held fixed).
+
 ## 6. Unit of replication and the transport of thresholds
 
 **Proposition 4 (size inflation).** If each run contributes m exchangeable-within-run observations with intraclass correlation rho, a two-sample test that treats observations as independent has, under the null and for large samples, size 2(1 - Phi(z_(alpha/2) / sqrt(D))) with D = 1 + (m-1) rho. For D = 11 this is 0.55.
@@ -99,5 +111,5 @@ Check (`C_auroc`, pricing, honest 95th percentile): pooled AUROC 0.89 while with
 ## 8. Not claimed
 
 * The theorems are elementary (noise outsourcing, randomisation, variance inflation). The contribution is their application to instructed LLM agents and the finding that a widely used control is formally blind to the effect it is read as excluding.
-* Section 4 is one feature and three models. The cross-condition replay has not been run.
+* Section 4 is one feature and three models. The cross-condition replay has been run on one model and one game (Section 5b).
 * The decomposition TE = DE + TM depends on the order of conditioning; the other order (text held at M_1) gives a different split when there is interaction between instruction and text.

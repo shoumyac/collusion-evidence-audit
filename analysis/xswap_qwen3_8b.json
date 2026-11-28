@@ -1,0 +1,131 @@
+{
+ "w1": {
+  "n": {
+   "honest": 100,
+   "collude": 100,
+   "honest_swap": 100,
+   "collude_swap": 100,
+   "honest_xswap": 99,
+   "collude_xswap": 100
+  },
+  "mean": {
+   "honest": 5.600725,
+   "collude": 8.336599999999999,
+   "honest_swap": 5.693125,
+   "collude_swap": 8.39135,
+   "honest_xswap": 5.279873737373737,
+   "collude_xswap": 8.2188
+  },
+  "TE": [
+   2.735874999999999,
+   2.561445624999999,
+   2.907784374999999
+  ],
+  "TM_collude_agents (collude - collude_xswap)": [
+   0.11779999999999902,
+   -0.04090124999999887,
+   0.2760024999999998
+  ],
+  "swap_contrast (collude - collude_swap)": [
+   -0.0547500000000003,
+   -0.2480499999999975,
+   0.13030312500000002
+  ],
+  "DE (collude_xswap - honest)": [
+   2.618075,
+   2.4617456250000003,
+   2.772401250000001
+  ],
+  "text_effect_honest_agents (honest_xswap - honest)": [
+   -0.3208512626262623,
+   -0.4701038573232318,
+   -0.17598674242424364
+  ]
+ },
+ "w2": {
+  "n": {
+   "honest": 100,
+   "collude": 100,
+   "honest_swap": 100,
+   "collude_swap": 100,
+   "honest_xswap": 100,
+   "collude_xswap": 100
+  },
+  "mean": {
+   "honest": 6.104524999999999,
+   "collude": 7.988775,
+   "honest_swap": 6.087125000000001,
+   "collude_swap": 7.955875000000001,
+   "honest_xswap": 5.949285,
+   "collude_xswap": 7.968
+  },
+  "TE": [
+   1.8842500000000015,
+   1.718849374999999,
+   2.049105625000003
+  ],
+  "TM_collude_agents (collude - collude_xswap)": [
+   0.020775000000000432,
+   -0.11037750000000035,
+   0.15165062499999923
+  ],
+  "swap_contrast (collude - collude_swap)": [
+   0.03289999999999971,
+   -0.09972562500000115,
+   0.16387562499999997
+  ],
+  "DE (collude_xswap - honest)": [
+   1.863475000000001,
+   1.6875500000000008,
+   2.038600624999999
+  ],
+  "text_effect_honest_agents (honest_xswap - honest)": [
+   -0.15523999999999916,
+   -0.3557108749999995,
+   0.05266275000000032
+  ]
+ },
+ "w3": {
+  "n": {
+   "honest": 100,
+   "collude": 100,
+   "honest_swap": 100,
+   "collude_swap": 100,
+   "honest_xswap": 100,
+   "collude_xswap": 100
+  },
+  "mean": {
+   "honest": 6.0668500000000005,
+   "collude": 8.484449999999999,
+   "honest_swap": 6.243370000000001,
+   "collude_swap": 8.347349999999999,
+   "honest_xswap": 6.365175000000001,
+   "collude_xswap": 8.20045
+  },
+  "TE": [
+   2.4175999999999984,
+   2.1972212499999997,
+   2.6458499999999985
+  ],
+  "TM_collude_agents (collude - collude_xswap)": [
+   0.2839999999999989,
+   0.11690000000000111,
+   0.44645249999999864
+  ],
+  "swap_contrast (collude - collude_swap)": [
+   0.13710000000000022,
+   -0.05012499999999962,
+   0.3310756249999985
+  ],
+  "DE (collude_xswap - honest)": [
+   2.1335999999999995,
+   1.9380974999999987,
+   2.324053125
+  ],
+  "text_effect_honest_agents (honest_xswap - honest)": [
+   0.2983250000000002,
+   0.044295000000000646,
+   0.5569574999999978
+  ]
+ }
+}
