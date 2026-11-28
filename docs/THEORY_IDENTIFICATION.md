@@ -90,6 +90,30 @@ Run: `games/run_xswap.sh`, analysis `analysis/xswap_analysis.py`, data `results_
 
 Reading: a colluding Qwen3-8B that reads honest-run text instead of collusive text prices 0.02 to 0.28 lower, i.e. 1% to 12% of the instruction effect; 88% to 99% is direct (the instruction in its own prompt). The text effect is not zero in wording 3 (+0.28 [+0.12, +0.45]), it changes sign for honest agents across wordings (-0.32 in wording 1, +0.30 in wording 3), and the same-condition swap contrast was close to zero in all three, as Theorem 2 predicts for a small text effect. This single-model, single-game result supports the original claim in a bounded form: for Qwen3-8B pricing the rise is mostly parallel obedience, and the text channel contributes at most about 0.3 price units. It says nothing about the other models, games or about the action channel (the rival's visible prices are held fixed).
 
+## 5d. Channel decomposition with open-loop puppet rivals (Qwen3-8B, 60 runs per cell)
+
+Design (`games/runner.py` conditions `pup-<instruction>-<T><A>[-coh]`, script `games/run_factorial.sh`, analysis `analysis/factorial_analysis.py`, data `results_factorial/qwen3_8b`). One live agent plays against puppet rivals that replay recorded behaviour of another run. The puppets' text comes from a collude-run (T=c) or honest-run (T=h), and their prices from a collude-run or honest-run (A=c or h), drawn from different runs, so text and action are crossed independently. The live agent's profit is computed against the puppet's real prices, so its history is consistent. Write Y(z,T,A) for the live agent's run-mean action.
+
+**Proposition 9 (exact channel decomposition).** With total effect in the open-loop design OL = Y(1,cc) - Y(0,hh) and live effect TE (both agents live),
+TE = OL + FB, with FB = TE - OL the feedback component, and
+OL = DE + TX + AC + IA, where DE = Y(1,hh) - Y(0,hh), TX = Y(1,ch) - Y(1,hh), AC = Y(1,hc) - Y(1,hh), IA = Y(1,cc) - Y(1,ch) - Y(1,hc) + Y(1,hh).
+Each term is a difference of cell means identified by randomisation of source runs (Proposition 6). The identities hold by telescoping; the content is identification. (We report the main effects, averaging over the other factor's level.)
+
+Results, colluding agent, run-mean price, effects with 95% bootstrap intervals over runs:
+
+| game, wording | TE (live) | DE | text main | action main | interaction | feedback FB |
+|---|---|---|---|---|---|---|
+| pricing 1 | +2.74 | +2.44 [2.28, 2.61] | +0.03 [-0.12, 0.19] | +0.16 [0.01, 0.31] | -0.07 [-0.38, 0.21] | +0.10 [-0.17, 0.37] |
+| pricing 2 | +1.88 | +1.72 [1.47, 1.99] | +0.12 [-0.00, 0.24] | +0.20 [0.08, 0.33] | +0.02 [-0.24, 0.28] | -0.16 [-0.45, 0.15] |
+| pricing 3 | +2.42 | +1.75 [1.46, 2.03] | +0.08 [-0.09, 0.24] | +0.18 [0.02, 0.34] | +0.27 [-0.07, 0.59] | +0.41 [0.05, 0.79] |
+| auction 1 | -4.48 | -2.55 [-3.09, -2.05] | -1.25 [-1.59, -0.93] | -0.76 [-1.09, -0.42] | +0.87 [0.21, 1.52] | +0.08 [-0.36, 0.56] |
+| auction 2 | -4.18 | -2.84 [-3.23, -2.43] | -0.11 [-0.44, 0.22] | -1.23 [-1.58, -0.90] | -0.24 [-0.93, 0.41] | +0.00 [-0.39, 0.41] |
+| auction 3 | -4.66 | -2.71 [-3.24, -2.22] | -1.40 [-1.76, -1.02] | -0.65 [-1.02, -0.27] | +0.63 [-0.11, 1.36] | +0.10 [-0.27, 0.46] |
+
+Honest agents (no instruction): rival's prices pull them up in pricing (action main +0.53 [0.35, 0.71], +0.48, +0.39 in the three wordings) while the text main effect is small (+0.03, +0.33 [0.09, 0.55], +0.14). In the auction the honest agents' effects are within about 0.3.
+
+Reading: (i) in pricing, 64% to 89% of the instruction effect is direct (DE/TE), the text channel is at most 0.12 (4% of TE), the action channel 0.16 to 0.20 (7% to 9%), and there is no stable feedback component. (ii) In the auction, DE is 57% to 68% of TE, and the text channel is large in wordings 1 and 3 (-1.25, -1.40, about 28% to 30% of TE) although the same-condition swap contrast was near zero for this model, which is Theorem 2 in the data: a replay blind to a text effect of -1.3. (iii) Honest agents react to rivals' high prices, a spontaneous tacit-responsiveness channel with no instruction. (iv) Text and action sources do not interact reliably (one auction cell, +0.87 [0.21, 1.52]). (v) Coherent versus incoherent puppets (text and prices from the same run versus different runs) do not differ beyond +-0.3. Limits: one model; puppets are open-loop by construction, so FB is identified only as the live-versus-open-loop gap; the live and puppet effects use slightly different outcome definitions (the puppet design uses one live agent's mean price, the live design both agents' average).
+
 ## 5c. Three further results (finite-sample and design)
 
 **Proposition 6 (exact randomisation test for the text channel).** Assign each run's text source by a random offset independent of the run's noise. Under the sharp null that no run's outcome depends on which text it reads, every permutation of source labels over runs is equally likely, so the randomisation p-value of the run-mean contrast has exact size alpha (up to Monte Carlo error), for any within-run dependence. Check (`analysis/theory2.py`, 1,500 simulations, 20 rounds, intraclass correlation 0.5): size 0.051 (20 runs per arm) and 0.055 (10 per arm), against 0.55 for a round-level t-test and 0.055 for a run-level t-test; power at effect 0.6 is 0.714 (randomisation), 0.719 (run-level t) and 0.979 for the round-level test whose size is invalid. Using runs as units costs no power.
