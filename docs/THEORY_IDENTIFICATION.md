@@ -114,6 +114,18 @@ Honest agents (no instruction): rival's prices pull them up in pricing (action m
 
 Reading: (i) in pricing, 64% to 89% of the instruction effect is direct (DE/TE), the text channel is at most 0.12 (4% of TE), the action channel 0.16 to 0.20 (7% to 9%), and there is no stable feedback component. (ii) In the auction, DE is 57% to 68% of TE, and the text channel is large in wordings 1 and 3 (-1.25, -1.40, about 28% to 30% of TE) although the same-condition swap contrast was near zero for this model, which is Theorem 2 in the data: a replay blind to a text effect of -1.3. (iii) Honest agents react to rivals' high prices, a spontaneous tacit-responsiveness channel with no instruction. (iv) Text and action sources do not interact reliably (one auction cell, +0.87 [0.21, 1.52]). (v) Coherent versus incoherent puppets (text and prices from the same run versus different runs) do not differ beyond +-0.3. Limits: one model; puppets are open-loop by construction, so FB is identified only as the live-versus-open-loop gap; the live and puppet effects use slightly different outcome definitions (the puppet design uses one live agent's mean price, the live design both agents' average).
 
+## 5e. Reward-punishment test (Qwen3-8B, pricing, 60 runs per cell)
+
+Collusion in the economic sense needs punishment: a firm should cut its price after the rival undercuts. Puppet condition `pup-<instruction>-cc-dev`: the rival replays a collude-run script (text and prices) and undercuts to 3.0 (below the Nash price 4.6) in one round (index 4); the control `pup-<instruction>-cc-coh` is the same script without the undercut. Punishment is the live agent's price in rounds 5 to 7 under the undercut minus the control (`analysis/deviation_analysis.py`). A placebo compares rounds 1 to 4, before the undercut.
+
+| wording | colluding agent, rounds 5-7 | placebo (rounds 1-4) | honest agent, rounds 5-7 | placebo |
+|---|---|---|---|---|
+| 1 | +0.06 [-0.24, +0.37] | +0.03 | -0.12 [-0.51, +0.29] | -0.11 |
+| 2 | -0.04 [-0.21, +0.13] | -0.00 | +0.27 [-0.12, +0.66] | +0.28 |
+| 3 | -0.09 [-0.38, +0.21] | -0.01 | -0.48 [-0.83, -0.13] | -0.38 |
+
+Reading: the colluding agent's price does not move after the rival undercuts (all intervals include zero, within about 0.4 price units, against an instructed price near 8). The one interval that excludes zero (honest agents, wording 3) is matched by an equal pre-undercut difference, so it reflects imbalance, not punishment. The instructed behaviour is a price level chosen on the instruction, not a strategy that is sustained by a threat of retaliation. One model, one game, one undercut size and timing.
+
 ## 5c. Three further results (finite-sample and design)
 
 **Proposition 6 (exact randomisation test for the text channel).** Assign each run's text source by a random offset independent of the run's noise. Under the sharp null that no run's outcome depends on which text it reads, every permutation of source labels over runs is equally likely, so the randomisation p-value of the run-mean contrast has exact size alpha (up to Monte Carlo error), for any within-run dependence. Check (`analysis/theory2.py`, 1,500 simulations, 20 rounds, intraclass correlation 0.5): size 0.051 (20 runs per arm) and 0.055 (10 per arm), against 0.55 for a round-level t-test and 0.055 for a run-level t-test; power at effect 0.6 is 0.714 (randomisation), 0.719 (run-level t) and 0.979 for the round-level test whose size is invalid. Using runs as units costs no power.
