@@ -43,7 +43,7 @@ def load_msgs(path: Path) -> dict:
 def run_one(game_name, backend, cost, cond, wording, rounds, seed, partner_msgs=None, max_tokens=250):
     g = make_game(game_name, rounds)
     g.reset(seed)
-    base = cond.replace("_swap", "")
+    base = cond.replace("_xswap", "").replace("_swap", "")
     hist, rows = [], []
     for rd in range(rounds):
         said, acts, tin_out = {}, {}, {}
@@ -98,8 +98,14 @@ def main(argv=None):
             if f.exists():
                 continue
             pm = None
-            if c.endswith("_swap"):
-                pf = root / c.replace("_swap", "") / f"run_{a.seed0 + (i + 1) % a.runs}.jsonl"
+            if c.endswith("_swap") or c.endswith("_xswap"):
+                # _swap: text from another run of the same condition; _xswap: text from the opposite
+                # condition (collude reads honest-run text, honest reads collude-run text), cross-condition replay
+                if c.endswith("_xswap"):
+                    src = {"collude": "honest", "honest": "collude"}[c[: -len("_xswap")]]
+                else:
+                    src = c[: -len("_swap")]
+                pf = root / src / f"run_{a.seed0 + (i + 1) % a.runs}.jsonl"
                 if not pf.exists():
                     sys.exit(f"{c} needs {pf} first: run the base condition before the swap condition")
                 pm = load_msgs(pf)
